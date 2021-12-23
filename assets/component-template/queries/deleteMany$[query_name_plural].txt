@@ -1,0 +1,21 @@
+// @works-lock-file:false
+
+import type { DatabasePoolType } from 'slonik';
+
+import { sql } from 'slonik';
+
+interface DeleteMany$[query_name_plural]Query {
+  $[ts_primary]
+}
+
+/** @internal */
+export function deleteMany$[query_name_plural]Factory(pool: DatabasePoolType) {
+  return async (query: DeleteMany$[query_name_plural]Query) => {
+    await pool.query(sql`
+      DELETE FROM "$[sql_table]"
+      WHERE 
+        $[sql_primary_where]
+      ;`
+    );
+  }
+}

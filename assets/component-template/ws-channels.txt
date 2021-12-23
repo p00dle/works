@@ -1,0 +1,22 @@
+// @works-lock-file:false
+
+import type { $[model_name] } from './types';
+import type { WsApi } from 'works';
+
+import { wsChannel } from 'works';
+import { allowAll } from '~/access-control';
+
+const $[ts_name]AllPropsQuery = {
+  $[ts_endpoint_all_query]
+} as const;
+
+const $[ts_name]WsChannels = {
+  '$[csv_filename]': wsChannel({
+    query: $[ts_name]AllPropsQuery,
+    accessControl: allowAll,
+    select: (_query, _payload: $[model_name]) => true
+  }),
+} 
+
+export type $[model_name]WsApi = typeof $[ts_name]WsChannels;
+

@@ -1,0 +1,25 @@
+// @works-lock-file:false
+
+import type { DatabasePoolType } from 'slonik';
+import type { $[model_name] } from '../types';
+
+import { sql } from 'slonik';
+
+interface Update$[query_name]Query {
+  $[ts_primary]
+}
+
+type Update$[query_name]Payload = $[model_name];
+
+/** @internal */
+export function update$[query_name]Factory(pool: DatabasePoolType) {
+  return async (query: Update$[query_name]Query, payload: Update$[query_name]Payload) => {
+    return await pool.query(sql`
+      UPDATE "$[sql_table]"
+      SET 
+        $[sql_columns_set]
+      WHERE 
+        $[sql_primary_where]
+      ;`);
+  }
+}

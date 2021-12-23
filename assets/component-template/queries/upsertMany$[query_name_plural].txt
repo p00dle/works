@@ -1,0 +1,29 @@
+// @works-lock-file:false
+
+import type { DatabasePoolType } from 'slonik';
+import type { $[model_name] } from '../types';
+
+import { sql } from 'slonik';
+
+type UpsertMany$[query_name_plural]Payload = $[model_name][];
+
+/** @internal */
+export function upsertMany$[query_name_plural]Factory(pool: DatabasePoolType) {
+  return async (query: void, payload: UpsertMany$[query_name_plural]Payload) => {
+    return await pool.query(sql`
+      ${sql.join(payload.map(payload => sql`
+      INSERT INTO $[sql_table] (
+        $[sql_columns]
+      )
+      VALUES (
+        $[sql_insert_columns]
+      )
+      ON CONFLICT ( 
+        $[sql_primary_comma] 
+      )
+      DO UPDATE SET 
+        $[sql_columns_set]
+        ;`), sql`\n`)}
+    `);
+  }
+}

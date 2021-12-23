@@ -1,0 +1,40 @@
+// @works-lock-file:false
+
+import { events } from '~/bootstrap/events';
+import { dbPool } from '~/bootstrap/db-pool';
+// import { cache } from 'works';
+
+import { read$[query_name]By$[query_primary]Factory } from './queries/read$[query_name]By$[query_primary]';
+import { readMany$[query_name_plural]Factory } from './queries/readMany$[query_name_plural]';
+import { create$[query_name]Factory } from './queries/create$[query_name]';
+import { createMany$[query_name_plural]Factory } from './queries/createMany$[query_name_plural]';
+import { deleteMany$[query_name_plural]Factory } from './queries/deleteMany$[query_name_plural]';
+import { update$[query_name]Factory } from './queries/update$[query_name]';
+import { updateMany$[query_name_plural]Factory } from './queries/updateMany$[query_name_plural]';
+import { upsert$[query_name]Factory } from './queries/upsert$[query_name]';
+import { upsertMany$[query_name_plural]Factory } from './queries/upsertMany$[query_name_plural]';
+import { stream$[query_name_plural]Factory } from './queries/stream$[query_name_plural]';
+
+export const read$[query_name]By$[query_primary] = read$[query_name]By$[query_primary]Factory(dbPool);
+export const readMany$[query_name_plural] = readMany$[query_name_plural]Factory(dbPool);
+export const stream$[query_name_plural] = stream$[query_name_plural]Factory(dbPool);
+
+/* 
+// uncomment to cache responses
+const read$[query_name]By$[query_primary]Cache = cache(read$[query_name]By$[query_primary]Factory(dbPool));
+const readMany$[query_name_plural]Cache = cache(readMany$[query_name_plural]Factory(dbPool));
+export const read$[query_name]By$[query_primary] = read$[query_name]By$[query_primary]Cache.controller;
+export const readMany$[query_name_plural] = readMany$[query_name_plural]Cache.controller;
+events.subscribe('$[sql_table]', '*', () => {
+  read$[query_name]By$[query_primary]Cache.invalidate();
+  readMany$[query_name_plural]Cache.invalidate();
+});
+*/
+
+export const create$[query_name] = events.wrapper('$[sql_table]', 'create-one', create$[query_name]Factory(dbPool));
+export const createMany$[query_name_plural] = events.wrapper('$[sql_table]', 'create-many', createMany$[query_name_plural]Factory(dbPool));
+export const deleteMany$[query_name_plural] = events.wrapper('$[sql_table]', 'delete-many', deleteMany$[query_name_plural]Factory(dbPool));
+export const update$[query_name] = events.wrapper('$[sql_table]', 'update-one', update$[query_name]Factory(dbPool));
+export const updateMany$[query_name_plural] = events.wrapper('$[sql_table]', 'update-many', updateMany$[query_name_plural]Factory(dbPool));
+export const upsert$[query_name] = events.wrapper('$[sql_table]', 'upsert-one', upsert$[query_name]Factory(dbPool));
+export const upsertMany$[query_name_plural] = events.wrapper('$[sql_table]', 'upsert-many', upsertMany$[query_name_plural]Factory(dbPool));

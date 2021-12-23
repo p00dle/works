@@ -1,0 +1,22 @@
+// @works-lock-file:false
+
+import type { DatabasePoolType } from 'slonik';
+import type { $[model_name] } from '../types';
+
+import { sql } from 'slonik';
+
+type Create$[query_name]Payload = $[model_name];
+
+/** @internal */
+export function create$[query_name]Factory(pool: DatabasePoolType) {
+  return async (_query: void, payload: Create$[query_name]Payload) => {
+    await pool.query(sql`
+      INSERT INTO "$[sql_table]" (
+        $[sql_columns]
+      )
+      VALUES (
+        $[sql_insert_columns]
+      );`
+    );
+  }
+}

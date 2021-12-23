@@ -1,0 +1,27 @@
+// @works-lock-file:false
+
+import type { DatabasePoolType } from 'slonik';
+import type { $[model_name] } from '../types';
+
+import { sql } from 'slonik';
+
+type CreateMany$[query_name_plural]Payload = $[model_name][];
+
+/** @internal */
+export function createMany$[query_name_plural]Factory(pool: DatabasePoolType) {
+  return async (_query: void, payload: CreateMany$[query_name_plural]Payload) => {
+    await pool.query(sql`
+      INSERT INTO "$[sql_table]" (
+        $[sql_columns]
+      )
+      SELECT * FROM ${sql.unnest(
+        payload.map(payload => [
+          $[ts_insert]
+        ]),
+        [
+          $[sql_column_types]
+        ]
+      )};`
+    );
+  }
+}

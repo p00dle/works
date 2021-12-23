@@ -1,0 +1,7 @@
+export type $[query_name]KeyValues = {
+  '$[csv_filename]-last-update': number;
+} 
+
+export const initial$[query_name]KeyValues: Partial<$[query_name]KeyValues> = {
+
+}

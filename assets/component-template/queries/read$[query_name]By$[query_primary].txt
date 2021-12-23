@@ -1,0 +1,31 @@
+// @works-lock-file:false
+
+import type { DatabasePoolType } from 'slonik';
+import type { $[model_name] } from '../types';
+
+import { sql } from 'slonik';
+
+interface Read$[query_name]By$[query_primary]Query {
+  $[ts_primary]
+}
+
+type Read$[query_name]By$[query_primary]Result = $[model_name];
+/* use below when not selecting all columns
+type Read[query_name]By[query_primary]Result = (Pick<$[model_name], 
+  $[ts_column_names]
+)[];
+*/
+
+/** @internal */
+export function read$[query_name]By$[query_primary]Factory(pool: DatabasePoolType) {
+  return async (query: Read$[query_name]By$[query_primary]Query) => {
+    return await pool.one<Read$[query_name]By$[query_primary]Result>(sql`
+      SELECT 
+        $[sql_columns]
+      FROM "$[sql_table]"
+      WHERE
+        $[sql_primary_where]
+      ;`
+    );
+  }
+}

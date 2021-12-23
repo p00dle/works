@@ -1,0 +1,30 @@
+// @works-lock-file:false
+
+import type { CsvApi, CsvColumn } from 'works';
+import type { $[model_name] } from './types';
+
+import { csvEndpoint } from 'works';
+import { allowAll } from '~/access-control';
+import { stream$[query_name_plural] } from './queries';
+
+const $[ts_name]AllPropsQuery = {
+  timezoneOffset: 'number',
+  dst: ['eu', 'us', 'none'],
+  $[ts_endpoint_all_query]
+} as const;
+
+const $[model_name]CsvColumns: CsvColumn<$[model_name]>[] = [
+  $[csv_columns]
+];
+
+export const $[ts_name]CsvEndpoints = {
+  '/$[endpoint]': csvEndpoint({
+    accessControl: allowAll,
+    query: $[ts_name]AllPropsQuery,
+    controller: stream$[query_name_plural],
+    filename: '$[csv_filename]',
+    columns: $[model_name]CsvColumns,
+  }),
+} as const;
+
+export type $[model_name]CsvApi = typeof $[ts_name]CsvEndpoints;

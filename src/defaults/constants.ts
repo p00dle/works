@@ -1,0 +1,1 @@
+export const configFilename = 'works.config.js';

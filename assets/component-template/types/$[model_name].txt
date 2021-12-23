@@ -1,0 +1,6 @@
+// @works-lock-file:false
+
+/** @internal */
+export interface $[model_name] {
+  $[ts_model_props]
+}

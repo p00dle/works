@@ -1,0 +1,6 @@
+// @works-lock-file:false
+
+export * from './queries';
+export type {
+  $[model_name],
+} from './types';

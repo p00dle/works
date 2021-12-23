@@ -1,0 +1,2 @@
+./components/key-value/migrations/v001.sql
+./components/user/migrations/v001.sql

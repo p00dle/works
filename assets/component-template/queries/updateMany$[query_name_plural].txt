@@ -1,0 +1,27 @@
+// @works-lock-file:false
+
+import type { DatabasePoolType } from 'slonik';
+import type { $[model_name] } from '../types';
+
+import { sql } from 'slonik';
+
+interface UpdateMany$[query_name_plural]Query {
+  $[ts_model_props]
+}
+
+type UpdateMany$[query_name_plural]Payload = $[model_name][];
+
+/** @internal */
+export function updateMany$[query_name_plural]Factory(pool: DatabasePoolType) {
+  return async (query: UpdateMany$[query_name_plural]Query, payload: UpdateMany$[query_name_plural]Payload) => {
+    return await pool.query(sql`
+      ${sql.join(payload.map(payload => sql`
+      UPDATE "$[sql_table]"
+      SET 
+        $[sql_columns_set]
+      WHERE 
+        $[sql_primary_where]
+        ;`), sql`\n`)}
+    `);
+  }
+}

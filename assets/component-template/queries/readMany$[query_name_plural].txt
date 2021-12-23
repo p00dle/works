@@ -1,0 +1,31 @@
+// @works-lock-file:false
+
+import type { DatabasePoolType } from 'slonik';
+import type { $[model_name] } from '../types';
+
+import { sql } from 'slonik';
+
+interface ReadMany$[query_name]Query {
+  $[ts_model_props]
+}
+
+type ReadMany$[query_name_plural]Result = $[model_name][];
+/* use below when not selecting all columns
+type ReadMany$[query_name_plural]Result = (Pick<$[model_name], 
+  $[ts_column_names]
+)[];
+*/
+
+/** @internal */
+export function readMany$[query_name_plural]Factory(pool: DatabasePoolType) {
+  return async (query: ReadMany$[query_name]Query) => {
+    return await pool.any<ReadMany$[query_name_plural]Result>(sql`
+      SELECT 
+        $[sql_columns]
+      FROM "$[sql_table]"
+      WHERE
+        $[sql_all_where]
+      ;`
+    );
+  }
+}

@@ -1,0 +1,25 @@
+// @works-lock-file:false
+
+import type { DatabasePoolType } from 'slonik';
+import { Readable } from 'stream';
+
+import { sql } from 'slonik';
+
+interface ReadMany$[query_name]Query {
+  $[ts_model_props]
+}
+
+/** @internal */
+export function stream$[query_name_plural]Factory(pool: DatabasePoolType) {
+  return (query: ReadMany$[query_name]Query) => {
+    return new Promise<Readable>(resolve => {
+      pool.stream(sql`
+      SELECT 
+        $[sql_columns]
+      FROM "$[sql_table]"
+      WHERE
+        $[sql_all_where]
+      ;`, resolve);
+    });
+  }
+}

@@ -1,0 +1,3 @@
+// @works-lock-file:false
+
+export type { $[model_name] } from './types/$[model_name]';

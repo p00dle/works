@@ -1,0 +1,15 @@
+// @works-lock-file:false
+
+import type { $[model_name] } from './types';
+
+export type $[query_name]Events = {
+  '$[csv_filename]': {
+    'create-one': $[model_name];
+    'create-many': $[model_name][];
+    'delete-many': void;
+    'update-one': $[model_name];
+    'update-many': $[model_name][];
+    'upsert-one': $[model_name];
+    'upsert-many': $[model_name][];
+  }
+}
