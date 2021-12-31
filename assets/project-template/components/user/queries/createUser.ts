@@ -9,7 +9,7 @@ type CreateUserPayload = User;
 
 /** @internal */
 export function createUserFactory(pool: DatabasePoolType) {
-  return async (_query: void, payload: CreateUserPayload) => {
+  return async (_query: any, payload: CreateUserPayload) => {
     await pool.query(sql`
       INSERT INTO "users" (
         "username",

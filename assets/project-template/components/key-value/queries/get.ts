@@ -1,9 +1,7 @@
 // @works-lock-file:false
 
 import type { DatabasePoolType } from 'slonik';
-
-import { NotFoundError } from 'works';
-import { sql } from 'slonik';
+import { sql, NotFoundError } from 'slonik';
 
 /** @internal */
 export function getFactory(pool: DatabasePoolType) {

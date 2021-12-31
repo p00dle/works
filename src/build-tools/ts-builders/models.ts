@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { dir, file } from '../../lib/file';
-import { getRootDir } from '../../..';
+import { getRootDir } from '../../lib/get-rootdir';
 import { UserError } from '../action-wrapper';
 
 export async function generateModels(outputDir: string): Promise<Record<string, true>> {

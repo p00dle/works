@@ -5,8 +5,8 @@ import type { User } from '../types';
 
 import { sql } from 'slonik';
 
-interface ReadUserByUsernameQuery {
-  username: string;
+type ReadUserByUsernameQuery = {
+  username?: string;
 }
 
 type ReadUserByUsernameResult = User;
@@ -14,6 +14,7 @@ type ReadUserByUsernameResult = User;
 /** @internal */
 export function readUserByUsernameFactory(pool: DatabasePoolType) {
   return async (query: ReadUserByUsernameQuery) => {
+    if (!query.username) throw Error('username is required');
     return await pool.one<ReadUserByUsernameResult>(sql`
       SELECT 
         "username",

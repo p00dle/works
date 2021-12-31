@@ -1,5 +1,5 @@
 import { readWorksConfigFile, getRootDir } from 'works';
-import * as express from 'express';
+import { static as expressStatic, Router } from 'express';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as compression from 'compression';
@@ -11,7 +11,7 @@ import { csvRouter } from '~/bootstrap/csv-router';
 
 // TODO: add csurf
 
-export const httpRouter = express.Router();
+export const httpRouter: Router = Router();
 const config = readWorksConfigFile();
 const rootDir = getRootDir();
 const relativeClientPath = config.spaClientPath
@@ -33,6 +33,6 @@ httpRouter.get('/', (req, res, next) => {
     return res.redirect('/login');
   }
 });
-httpRouter.use(express.static(clientPath));
+httpRouter.use(expressStatic(clientPath));
 httpRouter.use('/api', apiRouter);
 httpRouter.use('/csv', csvRouter)

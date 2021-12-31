@@ -5,7 +5,7 @@ import type { User } from '../types';
 
 import { sql } from 'slonik';
 
-interface ReadUserByEmailQuery {
+type ReadUserByEmailQuery = {
   email: string;
 }
 

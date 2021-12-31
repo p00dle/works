@@ -1,3 +1,10 @@
 import { EndpointFactory } from '../types/endpoint';
 
-export const endpoint: EndpointFactory = id => id;
+function id<T>(t: T): T {
+  return t;
+}
+
+export const endpoint: EndpointFactory = {
+  get: id,
+  post: id,
+}

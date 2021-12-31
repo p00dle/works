@@ -9,7 +9,7 @@ type CreateManyUsersPayload = User[];
 
 /** @internal */
 export function createManyUsersFactory(pool: DatabasePoolType) {
-  return async (_query: void, payload: CreateManyUsersPayload) => {
+  return async (_query: any, payload: CreateManyUsersPayload) => {
     await pool.query(sql`
       INSERT INTO "users" (
         "username",

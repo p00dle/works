@@ -3,9 +3,9 @@
     "target": "es2019",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "./build",
+    "outDir": "./dist/",
     "incremental": true,
-    "tsBuildInfoFile": "./",
+    "composite": true,
     "removeComments": true,
     "resolveJsonModule": true,
     "strict": true,
@@ -21,8 +21,23 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./*"],
     },
     "esModuleInterop": true
-  }
+  },
+  "files": [
+    "./index.ts"
+  ],
+  "include": [
+    "./access-control/**/*",
+    "./bootstrap/**/*",
+    "./components/**/*",
+    "./lib/**/*",
+    "./mailer-templates/**/*",
+    "./services/**/*",
+    "./types/**/*",
+  ],
+  "exclude": [
+    "dist"
+  ]
 }

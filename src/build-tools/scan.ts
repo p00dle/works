@@ -10,7 +10,7 @@ import { makeDiffs } from './sql-builders/diff';
 import { makeAlterTableSql } from './sql-builders/alter';
 import { makeCreateTableSql } from './sql-builders/create';
 import { UserError } from './action-wrapper';
-import { envVar } from '../..';
+import { envVar } from '../factories/env-var';
 
 type TableCache = Record<string, Table>;
 

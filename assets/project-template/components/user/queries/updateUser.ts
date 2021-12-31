@@ -5,7 +5,7 @@ import type { User } from '../types';
 
 import { sql } from 'slonik';
 
-interface UpdateUserQuery {
+type UpdateUserQuery = {
   username: string;
 }
 
@@ -14,7 +14,7 @@ type UpdateUserPayload = Pick<User, 'role' | 'email' | 'fullName' | 'managerId'>
 /** @internal */
 export function updateUserFactory(pool: DatabasePoolType) {
   return async (query: UpdateUserQuery, payload: UpdateUserPayload) => {
-    return await pool.query(sql`
+    await pool.query(sql`
       UPDATE "usersTemps"
       SET 
         "role" = ${payload.role},

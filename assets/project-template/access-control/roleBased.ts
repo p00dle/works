@@ -1,5 +1,8 @@
 import { rbacFactory } from 'works';
-import { userRoles } from '~/types/user-roles';
+import { User } from '~/components/user/types';
 
 /** @internal */
-export const roleBased = rbacFactory(userRoles);
+export const roleBased = rbacFactory<User>();
+
+/** @internal */
+export const adminOnly = roleBased('admin');

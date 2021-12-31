@@ -19,7 +19,7 @@ export async function createComponent(componentPath: string) {
     await dir.createIfNotExists(dirPath);
   }
   const componentDir = joinedComponentDirs[joinedComponentDirs.length - 1];
-  const tableFileSource = path.join(__dirname, '../../../assets', 'table.config.ts');
+  const tableFileSource = path.join(__dirname, '../../assets', 'table.config.ts');
   const tableFileTarget = path.join(componentDir, 'table.config.ts');
   if (await file.exists(tableFileTarget)) {
     throw new UserError(`Component ${componentPath} already exists`);

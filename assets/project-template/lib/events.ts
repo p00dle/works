@@ -62,9 +62,9 @@ export function eventsFactory<T extends Events>(emitter: BaseEventEmitter, logge
       emitter.emit('works-event', {channel, event, payload});
     },
     wrapper: (channel, event, func) => {
-      return async payload => {
+      return async (query, payload) => {
         try {
-          await func(payload);
+          await func(query, payload);
           eventsEmitter.publish(channel, event, payload);
         } catch (err) {
           throw err;

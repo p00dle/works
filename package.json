@@ -1,8 +1,9 @@
 {
   "name": "works",
   "version": "0.1.0",
-  "main": "./src/index.js",
   "author": "Krzysztof Siuda",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "UNLICENSED",
   "private": true,
   "devDependencies": {
@@ -40,7 +41,7 @@
     "ws": "^8.3.0"
   },
   "bin": {
-    "works": "./build/src/bin/cli"
+    "works": "./build/bin/cli"
   },
   "scripts": {
     "test": "jest"

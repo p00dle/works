@@ -8,7 +8,7 @@ import { logger } from '~/bootstrap/logger';
 import { userCsvEndpoints } from '~/components/user/csv-endpoints';
 // @works:next_import
 
-export const csvRouter = Router();
+export const csvRouter: Router = Router();
 
 const endpoints: CsvEndpoints[] = [
   userCsvEndpoints,

@@ -5,7 +5,7 @@ import type { $[model_name] } from '../types';
 
 import { sql } from 'slonik';
 
-interface Update$[query_name]Query {
+type Update$[query_name]Query = {
   $[ts_primary]
 }
 

@@ -4,13 +4,13 @@ import type { DatabasePoolType } from 'slonik';
 
 import { sql } from 'slonik';
 
-interface UpdateUserLastLoginQuery {
+type UpdateUserLastLoginQuery = {
   username: string;
 }
 
 /** @internal */
 export function updateUserLastLoginFactory(pool: DatabasePoolType) {
-  return async (query: UpdateUserLastLoginQuery, payload: void) => {
+  return async (query: UpdateUserLastLoginQuery, _payload: any) => {
     return await pool.query(sql`
       UPDATE "users"
       SET 

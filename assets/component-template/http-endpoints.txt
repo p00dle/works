@@ -20,54 +20,54 @@ const $[ts_name]AllPropsQuery = {
   $[ts_endpoint_all_query]
 } as const;
 
-export const $[ts_name]HttpEndpoints = {
-  GET: {
-    '/$[endpoint]/$[endpoint_primary_param]': endpoint({
-      accessControl: defaultAccessControl,
-      query: $[ts_endpoint_primary_query],
-      controller: read$[query_name]By$[query_primary],
-    }),
-    '/$[endpoint]': endpoint({
-      accessControl: defaultAccessControl,
-      query: $[ts_name]AllPropsQuery,
-      controller: readMany$[query_name_plural],
-    }),
-  },
-  POST: {
-    '/$[endpoint]/create': endpoint({
-      accessControl: defaultAccessControl,
-      controller: create$[query_name],
-    }),
-    '/$[endpoint]/create-many': endpoint({
-      accessControl: defaultAccessControl,
-      controller: createMany$[query_name_plural],
-    }),
-
-    '/$[endpoint]/delete-many': endpoint({
-      accessControl: defaultAccessControl,
-      query: $[ts_endpoint_primary_query],
-      controller: deleteMany$[query_name_plural],
-    }),
-    '/$[endpoint]/update': endpoint({
-      accessControl: defaultAccessControl,
-      query: $[ts_endpoint_primary_query],
-      controller: update$[query_name],
-    }),
-    '/$[endpoint]/update-many': endpoint({
-      accessControl: defaultAccessControl,
-      query: $[ts_name]AllPropsQuery,
-      controller: updateMany$[query_name_plural],
-    }),
-    '/$[endpoint]/upsert': endpoint({
-      accessControl: defaultAccessControl,
-      controller: upsert$[query_name],
-    }),
-    '/$[endpoint]/upsert-many': endpoint({
-      accessControl: defaultAccessControl,
-      controller: upsertMany$[query_name_plural],
-    }),     
-  },
+export const $[ts_name]GetEndpoints = {
+  '/$[endpoint]/$[endpoint_primary_param]': endpoint({
+    accessControl: defaultAccessControl,
+    query: $[ts_endpoint_primary_query],
+    controller: read$[query_name]By$[query_primary],
+  }),
+  '/$[endpoint]': endpoint({
+    accessControl: defaultAccessControl,
+    query: $[ts_name]AllPropsQuery,
+    controller: readMany$[query_name_plural],
+  }),
 } as const;
 
-export type $[model_name]HttpEndpoints = typeof $[ts_name]Endpoints;
+export const $[ts_name]PostEndpoints = {
+  '/$[endpoint]/create': endpoint({
+    accessControl: defaultAccessControl,
+    controller: create$[query_name],
+  }),
+  '/$[endpoint]/create-many': endpoint({
+    accessControl: defaultAccessControl,
+    controller: createMany$[query_name_plural],
+  }),
+
+  '/$[endpoint]/delete-many': endpoint({
+    accessControl: defaultAccessControl,
+    query: $[ts_endpoint_primary_query],
+    controller: deleteMany$[query_name_plural],
+  }),
+  '/$[endpoint]/update': endpoint({
+    accessControl: defaultAccessControl,
+    query: $[ts_endpoint_primary_query],
+    controller: update$[query_name],
+  }),
+  '/$[endpoint]/update-many': endpoint({
+    accessControl: defaultAccessControl,
+    query: $[ts_name]AllPropsQuery,
+    controller: updateMany$[query_name_plural],
+  }),
+  '/$[endpoint]/upsert': endpoint({
+    accessControl: defaultAccessControl,
+    controller: upsert$[query_name],
+  }),
+  '/$[endpoint]/upsert-many': endpoint({
+    accessControl: defaultAccessControl,
+    controller: upsertMany$[query_name_plural],
+  }),     
+} as const;
+
+export type $[model_name]GetEndpoints = typeof $[ts_name]GetEndpoints;
+export type $[model_name]PostEndpoints = typeof $[ts_name]PostEndpoints;
 

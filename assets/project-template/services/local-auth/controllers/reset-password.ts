@@ -2,7 +2,7 @@ import { utils } from 'works';
 import { unsafeReadUserByUsername, updateUserPassword } from '~/components/user/queries';
 import * as owasp from 'owasp-password-strength-test';
 
-interface ResetPasswordArgs {
+type ResetPasswordArgs = {
   username: string;
   password: string;
   password2: string;
@@ -11,7 +11,7 @@ interface ResetPasswordArgs {
 }
 
 
-export async function resetPasswordAuthenticated({username, oldPassword, password, password2}: ResetPasswordArgs): Promise<string> {
+export async function resetPasswordAuthenticated(_query: any, {username, oldPassword, password, password2}: ResetPasswordArgs): Promise<string> {
   if (password !== password2) return 'Passwords do not match';
   const user = await unsafeReadUserByUsername({username});
   if (!user) return 'Unknown server error';

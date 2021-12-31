@@ -1,15 +1,11 @@
-import { AccessControl } from '../..';
+import { AccessControl } from '../types/_common';
 import { arrayToDict } from '../lib/utils';
 
-export type AclOptions<T extends string[] | readonly string[]> =
-  | T[number] | '*'
-  | (T[number] | '*')[]
-  | Record<T[number] | '*', boolean | AccessControl>
+export type AccessControlOptions<T extends string> =
+  | T | '*'
+  | (T | '*')[]
+  | Record<T | '*', boolean | AccessControl>
 ;
-
-interface User {
-  role: string;
-}
 
 async function allow() {
   return true;
@@ -25,7 +21,11 @@ function makeAccessControl(access: boolean | AccessControl): AccessControl {
   throw Error('Invalid access control');
 }
 
-export function rbacFactory<T extends string[] | readonly string[]>(userRoles: T): (options: AclOptions<T>) => AccessControl<User, any> {
+function isACObject<T extends string>(obj: any): obj is Record<T | '*', boolean | AccessControl> {
+  return obj && typeof obj === 'object' && Object.keys(obj).length > 0
+}
+
+export function rbacFactory<U extends {role: any}>(): (options: AccessControlOptions<U['role']>) => AccessControl<U, any> {
   return options => {
     if (typeof options === 'string') {
       if (options === '*') return allow;
@@ -34,14 +34,14 @@ export function rbacFactory<T extends string[] | readonly string[]>(userRoles: T
       const map = arrayToDict(options);
       if (map['*']) return allow;
       else return async user => map[user.role] || false;
-    } else if (typeof options === 'object' && Object.keys(options).length > 0) {
+    } else if (isACObject<U['role']>(options)) {
       const hasWildCard = !!options['*'];
       const defaultAccess = hasWildCard ? makeAccessControl(options['*']) : forbid;
       const accessByRole: Record<string, AccessControl> = {};
       for (const [role, access] of Object.entries(options)) {
         accessByRole[role] = makeAccessControl(access);
       }
-      return async (user: User, query, req) => {
+      return async (user: U, query, req) => {
         const accessFn = accessByRole[user.role] || defaultAccess;
         return await accessFn(user, query, req);
       }

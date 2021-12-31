@@ -79,7 +79,8 @@ export function isAuthorisedFactory(accessControlFn: AccessControl): ExpressHand
 }
 
 
-export function queryParserFactory(query: QueryParams): ExpressHandler {
+export function queryParserFactory(query: QueryParams | undefined): ExpressHandler {
+  if (query === undefined) return (_req, _res, next) => next();
   const queryParser = createQueryParser(query);
   return (req, res, next) => {
     try {

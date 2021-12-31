@@ -1,3 +1,8 @@
+// @works:next_type_import
+
+// @works:next_value_import
+
+
 export type AllKeyValues = 
   & { }
   // @works:next_type

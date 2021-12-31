@@ -1,27 +1,33 @@
-import type { Endpoints } from 'works';
-
 import { Router } from 'express';
 import { bootstrapApiRouter } from 'works';
 import { isProduction, bypassAuthentication, bypassAuthorisation} from '~/bootstrap/global-env-vars';
 import { logger } from '~/bootstrap/logger';
 
-import { userEndpoints } from '~/components/user/http-endpoints';
-import { localAuthEndpoints } from '~/services/local-auth/http-endpoints';
+import { userGetEndpoints, userPostEndpoints } from '~/components/user/http-endpoints';
+import { localAuthGetEndpoints, localAuthPostEndpoints } from '~/services/local-auth/http-endpoints';
 // @works:next_import
 
-export const apiRouter = Router();
+export const apiRouter: Router = Router();
 
-const endpoints: Endpoints[] = [
-  userEndpoints,
-  localAuthEndpoints
-  // @works:next_route
+const getEndpoints = [
+  userGetEndpoints,
+  localAuthGetEndpoints,
+  // @works:next_get_endpoints
 ]
+
+const postEndpoints = [
+  userPostEndpoints,
+  localAuthPostEndpoints,
+  // @works:next_post_endpoints
+]
+
 
 bootstrapApiRouter({
   apiRouter,
   isProduction,
   bypassAuthentication,
   bypassAuthorisation,
-  endpoints,
+  getEndpoints,
+  postEndpoints,
   logger,
 });

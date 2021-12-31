@@ -9,7 +9,7 @@ type UpsertMany$[query_name_plural]Payload = $[model_name][];
 
 /** @internal */
 export function upsertMany$[query_name_plural]Factory(pool: DatabasePoolType) {
-  return async (query: void, payload: UpsertMany$[query_name_plural]Payload) => {
+  return async (query: any, payload: UpsertMany$[query_name_plural]Payload) => {
     return await pool.query(sql`
       ${sql.join(payload.map(payload => sql`
       INSERT INTO $[sql_table] (

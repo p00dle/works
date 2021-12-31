@@ -5,7 +5,7 @@ import { Readable } from 'stream';
 
 import { sql } from 'slonik';
 
-interface ReadMany$[query_name]Query {
+type ReadMany$[query_name]Query = {
   $[ts_model_props]
 }
 

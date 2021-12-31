@@ -1,5 +1,5 @@
-import { DatabaseStream } from '../..';
-import { AccessControl, QueryParams, QueryType } from './_common';
+import type { Readable } from 'node:stream';
+import type { AccessControl, QueryParams, QueryType } from './_common';
 
 interface DateStringifier { 
   stringify: (n : number) => string;
@@ -35,7 +35,7 @@ export type CsvColumn<T = any, P extends keyof T = keyof T>  = {
 export interface CsvEndpoint<Q extends QueryParams, T> {
   accessControl?: AccessControl<any, Q extends undefined ? void : QueryType<Q>>;
   query: Q;
-  controller: (query: QueryType<Q>) => Promise<DatabaseStream>;
+  controller: (query: QueryType<Q>) => Promise<Readable>;
   filename: string | ((query: QueryType<Q>) => string);
   columns: CsvColumn[] | ((query: QueryType<Q>) => CsvColumn[]);  
 }

@@ -1,12 +1,12 @@
 import * as path from 'path';
 import { createPool } from 'slonik';
 import { Client }  from 'pg';
-import { getRootDir } from '../..';
 import { envVar } from '../factories/env-var';
 import { dir, file } from '../lib/file';
 import { addMigrationFactory } from './migration-queries/addMigration';
 import { createMigrationTableFactory } from './migration-queries/createMigrationTable';
 import { getLastMigrationFactory } from './migration-queries/getLastMigration';
+import { getRootDir } from '../lib/get-rootdir';
 
 async function createDatabase(url: string) {
   const databaseNameMatch = url.match(/[^\/]+$/);

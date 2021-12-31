@@ -101,7 +101,7 @@ async function isFileLocked(filePath: string): Promise<boolean> {
 export async function generateComponentFiles(componentPath: string, table: Table) {
   const worksConfig = readWorksConfigFile();
   const variables = getVariables(table, worksConfig, path.basename(componentPath));
-  const scaffoldingDir = path.join(__dirname, '../../../assets/component-template');
+  const scaffoldingDir = path.join(__dirname, '../../assets/component-template');
   await Promise.all(dirs.map(async partialDir => {
     const sourceDir = path.join(scaffoldingDir, partialDir)
     const targetDir = path.join(componentPath, partialDir);

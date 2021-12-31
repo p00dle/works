@@ -5,7 +5,7 @@ import type { UnsafeUser } from '../types';
 
 import { sql } from 'slonik';
 
-interface ReadUserByUsernameQuery {
+type ReadUserByUsernameQuery = {
   username: string;
 }
 

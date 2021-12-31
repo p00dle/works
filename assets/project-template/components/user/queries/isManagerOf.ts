@@ -2,9 +2,9 @@
 
 import type { DatabasePoolType } from 'slonik';
 
-import { sql, DataIntegrityError } from 'works';
+import { sql, DataIntegrityError } from 'slonik';
 
-interface ReadUserByUsernameQuery {
+type ReadUserByUsernameQuery = {
 	managerId: string;
   username: string;
 }

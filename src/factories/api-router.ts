@@ -1,4 +1,4 @@
-import type { Endpoints } from '../..';
+import type { GetEndpoints, PostEndpoints, GetEndpoint, PostEndpoint } from '../types/endpoint';
 import type { Logger } from '../types/logger';
 
 import { Router } from 'express';
@@ -33,30 +33,30 @@ interface BootStrapApiRouterParams {
   isProduction: boolean;
   bypassAuthentication: boolean;
   bypassAuthorisation: boolean;
-  endpoints: Endpoints[];
+  getEndpoints: GetEndpoints[];
+  postEndpoints: PostEndpoints[];
   logger?: Logger;
 }
 
-export const bootstrapApiRouter = function httpRouterFactory({apiRouter, isProduction, bypassAuthentication, bypassAuthorisation, endpoints, logger}: BootStrapApiRouterParams) {
-  for (const componentEndpoints of endpoints) {
-    for (const [method, paths] of Object.entries(componentEndpoints)) {
-      for (const [path, endpoint] of Object.entries(paths)) {
-        const routerMethod: 'get' | 'post' | undefined = ({
-          'GET': 'get',
-          'POST': 'post',
-          'get': 'get',
-          'post': 'post',
-        } as const)[method];
-        if (routerMethod === undefined) throw Error('Invalid method: ' + method);
-        const handlers: ExpressHandler[] = [];
-        if (isLogger(logger) && logger.shouldLog('debug'))  handlers.push(expressLoggerFactory(logger, 'Works.Api'));
-        if (!bypassAuthentication || endpoint.accessControl !== 'allow-unauthenticated') handlers.push(isAuthenticated);
-        if (endpoint.query) handlers.push(queryParserFactory(endpoint.query));
-        if (!bypassAuthorisation && endpoint.accessControl && endpoint.accessControl !== 'allow-unauthenticated') handlers.push(isAuthorisedFactory(endpoint.accessControl));
-        if (Array.isArray(endpoint.middleware)) endpoint.middleware.forEach(handler => handlers.push(handler));
-        handlers.push(controllerWrapper(endpoint.controller));
-        apiRouter[routerMethod](path, handlers);
-      }
+export const bootstrapApiRouter = function httpRouterFactory({apiRouter, isProduction, bypassAuthentication, bypassAuthorisation, getEndpoints, postEndpoints, logger}: BootStrapApiRouterParams) {
+  function addRoute(method: 'get' | 'post', route: string, endpoint: GetEndpoint<any, any> | PostEndpoint<any, any, any> ) {
+    const handlers: ExpressHandler[] = [];
+    if (isLogger(logger) && logger.shouldLog('debug'))  handlers.push(expressLoggerFactory(logger, 'Works.Api'));
+    if (!bypassAuthentication || endpoint.accessControl !== 'allow-unauthenticated') handlers.push(isAuthenticated);
+    if (endpoint.query) handlers.push(queryParserFactory(endpoint.query));
+    if (!bypassAuthorisation && endpoint.accessControl && endpoint.accessControl !== 'allow-unauthenticated') handlers.push(isAuthorisedFactory(endpoint.accessControl));
+    if (Array.isArray(endpoint.middleware)) endpoint.middleware.forEach(handler => handlers.push(handler));
+    handlers.push(controllerWrapper(endpoint.controller));
+    apiRouter[method](route, handlers);
+  }
+  for (const componentEndpoints of getEndpoints) {
+    for (const [route, endpoint] of Object.entries(componentEndpoints)) {
+      addRoute('get', route, endpoint);
+    }
+  }
+  for (const componentEndpoints of postEndpoints) {
+    for (const [route, endpoint] of Object.entries(componentEndpoints)) {
+      addRoute('post', route, endpoint);
     }
   }
 }

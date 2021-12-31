@@ -11,8 +11,8 @@ export function toArray<T>(val: T | T[]): T[] {
   return Array.isArray(val) ? val : [val];
 }
 
-export function toType<T>(val: T) {
-  return val;
+export function toType<T>(val: any): T {
+  return val as unknown as T;
 }
 
 export function isNonEmptyArray<T>(arr: any): arr is T[] {

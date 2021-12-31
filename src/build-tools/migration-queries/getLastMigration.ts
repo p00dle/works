@@ -1,7 +1,8 @@
-import { DatabasePoolType, sql, NotFoundError } from 'slonik';
+import type { DatabasePoolType} from 'slonik';
+import { sql, NotFoundError } from 'slonik';
 
 /** @internal */
-export function getLastMigrationFactory(pool: DatabasePoolTypeType) {
+export function getLastMigrationFactory(pool: DatabasePoolType) {
   return async () => {
     try {
       const row = await pool.one<{version: number}>(sql`

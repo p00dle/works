@@ -4,7 +4,7 @@ import type { DatabasePoolType } from 'slonik';
 
 import { sql } from 'slonik';
 
-interface DeleteUserQuery {
+type DeleteUserQuery = {
   username: string;
 }
 

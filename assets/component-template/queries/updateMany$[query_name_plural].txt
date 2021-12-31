@@ -5,7 +5,7 @@ import type { $[model_name] } from '../types';
 
 import { sql } from 'slonik';
 
-interface UpdateMany$[query_name_plural]Query {
+type UpdateMany$[query_name_plural]Query = {
   $[ts_model_props]
 }
 

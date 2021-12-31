@@ -3,7 +3,8 @@
 // TODO: IMPLEMENT PATHS FOR OTHER QUERIES
 
 import { endpoint } from 'works';
-import { roleBased, isSameUser, isManagerOf } from '~/access-control';
+import { adminOnly } from '~/access-control';
+import { addUsernameToQuery } from './middlewares/addUsernameToQuery';
 
 import {
  readAllUsers,
@@ -14,41 +15,41 @@ import {
  updateUser,
 } from './queries'
 
-const adminOnly = roleBased('admin');
-
-export const userEndpoints = {
-  GET: {
-    '/users/:username': endpoint({
-      accessControl: isSameUser,
-      query: { username: 'string'},
-      controller: readUserByUsername,
-    }),
-    '/users': endpoint({
-      accessControl: adminOnly,
-      controller: readAllUsers,
-    }),
-  },
-  POST: {
-    '/users/create': endpoint({
-      accessControl: adminOnly,
-      controller: createUser,
-    }),
-    '/users/create-many': endpoint({
-      accessControl: adminOnly,
-      controller: createManyUsers,
-    }),
-    '/users/delete': endpoint({
-      accessControl: adminOnly,
-      query: { username: 'string'},
-      controller: deleteUser,
-    }),
-    '/users/update': endpoint({
-      accessControl: adminOnly,
-      query: { username: 'string'},
-      controller: updateUser,
-    }),  
-  },
+export const userGetEndpoints = {
+  '/users/userdata': endpoint.get({
+    middleware: [addUsernameToQuery],
+    query: { username: 'string?'},
+    controller: readUserByUsername,
+  }),
+  '/users': endpoint.get({
+    accessControl: adminOnly,
+    query: {},
+    controller: readAllUsers,
+  }),
 } as const;
 
-export type UserApi = typeof userEndpoints;
+export const userPostEndpoints = {
+  '/users/create': endpoint.post({
+    accessControl: adminOnly,
+    query: {},
+    controller: createUser,
+  }),
+  '/users/create-many': endpoint.post({
+    accessControl: adminOnly,
+    query: {},
+    controller: createManyUsers,
+  }),
+  '/users/delete': endpoint.post({
+    accessControl: adminOnly,
+    query: { username: 'string'},
+    controller: deleteUser,
+  }),
+  '/users/update': endpoint.post({
+    accessControl: adminOnly,
+    query: { username: 'string'},
+    controller: updateUser,
+  }),  
+} as const;
 
+export type UserGetApi = typeof userGetEndpoints;
+export type UserPostApi = typeof userPostEndpoints;

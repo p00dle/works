@@ -1,5 +1,5 @@
-import type { WsApiParser } from 'works';
+// @works:next_import
 
-export type WsApi = WsApiParser<
-  | { }
->;
+export type WsApi = 
+  & { }
+  // @works:next_value

@@ -1,5 +1,5 @@
 import { createPool } from 'slonik';
-import { envVar, DateX } from 'works';
+import { DateX } from 'works';
 import { databaseUrl } from '~/bootstrap/global-env-vars';
 
 const date = new DateX({format: 'YYYY-MM-DD'});
@@ -7,7 +7,6 @@ const timestamp = new DateX({format: 'YYYY-MM-DD HH:mm:SS.sss'});
 
 const parseDate = (str: string) => date.parse(str);
 const parseTimestamp = (str: string) => timestamp.parse(str);
-
 
 /*
 'boolean': 'bool',

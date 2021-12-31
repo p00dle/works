@@ -1,12 +1,13 @@
 // @works-lock-file:false
 
-import type { DatabasePool, DatabaseStream } from 'works';
+import type { Readable } from 'stream';
+import type { DatabasePoolType} from 'slonik';
 import { sql } from 'slonik';
 
 /** @internal */
 export function streamUsersFactory(pool: DatabasePoolType) {
   return () => {
-    return new Promise<DatabaseStream>(resolve => {
+    return new Promise<Readable>(resolve => {
       pool.stream(sql`
       SELECT 
         "username",

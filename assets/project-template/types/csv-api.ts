@@ -1,8 +1,8 @@
+
 import type { UserCsvApi } from '~/components/user/csv-endpoints';
+// @works:next_import
 
-import type { CsvApiParser } from 'works';
-
-export type CsvApi = CsvApiParser<
+export type CsvApi = 
   & { }
   &  UserCsvApi
->;
+  // @works:next_value

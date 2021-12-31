@@ -5,7 +5,7 @@ import type { $[model_name] } from '../types';
 
 import { sql } from 'slonik';
 
-interface ReadMany$[query_name]Query {
+type ReadMany$[query_name]Query = {
   $[ts_model_props]
 }
 

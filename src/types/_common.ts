@@ -16,7 +16,7 @@ export type QueryParamType =
   | 'infer'
   | readonly string[]
 
-export type QueryParams = {[key: string]: QueryParamType}
+export type QueryParams = {[key: string]: QueryParamType};
 
 export type QueryType<T extends QueryParams> = {
   [K in keyof T]:  
@@ -49,8 +49,9 @@ export function type<T>(ret?: T) {
 
 export type Enum<T extends readonly string[]> = T[number];
 
-export type PromiseReturnType<T extends () => any> = T extends () => Promise<infer X> ? X : ReturnType<T>;
+export type PromiseReturnType<T extends (...args: any[]) => any> = T extends () => Promise<infer X> ? X : ReturnType<T>;
 
 export type AccessControl<U = any, Q = any> = (user: U, query: Q, req?: Express.Request) => boolean | Promise<boolean>;
 
 export type ExpressHandler = (req: Express.Request, res: Express.Response, next: Express.NextFunction) => void | Promise<void>;
+
