@@ -5,7 +5,7 @@ import type { User } from '../types';
 
 import { sql } from 'slonik';
 
-type ReadAllUsersResult = User[];
+type ReadAllUsersResult = User;
 
 /** @internal */
 export function readAllUsersFactory(pool: DatabasePoolType) {
