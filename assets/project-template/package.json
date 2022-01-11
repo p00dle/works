@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "body-parser": "^1.18.3",
-    "colors": "^1.4.0",
     "compression": "^1.7.3",
     "express": "^4.17.1",
     "express-session": "^1.17.2",

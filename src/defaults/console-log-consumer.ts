@@ -1,8 +1,17 @@
-import * as colors from 'colors/safe';
+import * as chalk from 'chalk';
 import { LogConsumer, LogLevel } from '../types/logger';
 
-const logColors: Record<LogLevel, keyof typeof colors> = {
-  debug: 'gray', info: 'green', warn: 'yellow', error: 'red', silent: 'black',
+type Color = typeof chalk.Color;
+type ColorType = LogLevel | 'timestamp' | 'logLevel'
+
+const DEFAULT_COLORS: Record<ColorType, Color> = {
+  debug: 'gray', 
+  info: 'green', 
+  warn: 'yellow', 
+  error: 'red', 
+  silent: 'black',
+  timestamp: 'white',
+  logLevel: 'blue',
 };
 
 function getUtcTimestampText(n: number): string {
@@ -41,18 +50,19 @@ interface Params {
   useTimestamp?: boolean;
   useLogLevel?: boolean;
   useUTC?: boolean;
+  colors?: Record<ColorType, Color>;
 }
 
-export function consoleLoggerConsumerFactory({useColors = true, useTimestamp = true, useLogLevel = true, useUTC = false}: Params = {}): LogConsumer {
+export function consoleLoggerConsumerFactory({useColors = true, useTimestamp = true, useLogLevel = true, useUTC = false, colors = DEFAULT_COLORS}: Params = {}): LogConsumer {
   const getTimestamp = useUTC ? getUtcTimestampText : getTimestampText;
   if (useColors) {
     if (useTimestamp) {
       if (useLogLevel) {
         return ({namespace, timestamp, logLevel, payload}) => {
           if (logLevel === 'silent') return;
-          const colorFn = (colors[logColors[logLevel]] || stringId) as (str: string) => string;
-          const timestampText = colors.white(getTimestamp(timestamp));
-          const logLevelText = colors.blue(`[${logLevel.padEnd(5, ' ')}]`);
+          const colorFn = (chalk[colors[logLevel]] || stringId) as (str: string) => string;
+          const timestampText = chalk[colors.timestamp](getTimestamp(timestamp));
+          const logLevelText = chalk[colors.logLevel](`[${logLevel.padEnd(5, ' ')}]`);
           const namespaceText = colorFn(`[${namespace}]`);
           const payloadText = colorFn(stringifyPayload(payload));
           const text = `${timestampText} ${logLevelText} ${namespaceText} ${payloadText}`;
@@ -61,8 +71,8 @@ export function consoleLoggerConsumerFactory({useColors = true, useTimestamp = t
       } else {
         return ({namespace, timestamp, logLevel, payload}) => {
           if (logLevel === 'silent') return;
-          const colorFn = (colors[logColors[logLevel]] || stringId) as (str: string) => string;
-          const timestampText = colors.white(getTimestamp(timestamp));
+          const colorFn = (chalk[colors[logLevel]] || stringId) as (str: string) => string;
+          const timestampText = chalk[colors.timestamp](getTimestamp(timestamp));
           const namespaceText = colorFn(`[${namespace}]`);
           const payloadText = colorFn(stringifyPayload(payload));
           const text = `${timestampText} ${namespaceText} ${payloadText}`;
@@ -73,8 +83,8 @@ export function consoleLoggerConsumerFactory({useColors = true, useTimestamp = t
       if (useLogLevel) {
         return ({namespace, logLevel, payload}) => {
           if (logLevel === 'silent') return;
-          const colorFn = (colors[logColors[logLevel]] || stringId) as (str: string) => string;
-          const logLevelText = colors.blue(`[${logLevel.padEnd(5, ' ')}]`);
+          const colorFn = (chalk[colors[logLevel]] || stringId) as (str: string) => string;
+          const logLevelText = chalk[colors.logLevel](`[${logLevel.padEnd(5, ' ')}]`);
           const namespaceText = colorFn(`[${namespace}]`);
           const payloadText = colorFn(stringifyPayload(payload));
           const text = `${logLevelText} ${namespaceText} ${payloadText}`;
@@ -83,7 +93,7 @@ export function consoleLoggerConsumerFactory({useColors = true, useTimestamp = t
       } else {
         return ({namespace, logLevel, payload}) => {
           if (logLevel === 'silent') return;
-          const colorFn = (colors[logColors[logLevel]] || stringId) as (str: string) => string;
+          const colorFn = (chalk[colors[logLevel]] || stringId) as (str: string) => string;
           const namespaceText = colorFn(`[${namespace}]`);
           const payloadText = colorFn(stringifyPayload(payload));
           const text = `${namespaceText} ${payloadText}`;
