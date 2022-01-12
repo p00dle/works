@@ -10,8 +10,8 @@ const DEFAULT_COLORS: Record<ColorType, Color> = {
   warn: 'yellow', 
   error: 'red', 
   silent: 'black',
-  timestamp: 'white',
-  logLevel: 'blue',
+  timestamp: 'whiteBright',
+  logLevel: 'blueBright',
 };
 
 function getUtcTimestampText(n: number): string {

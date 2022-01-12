@@ -7,6 +7,15 @@ const consumer = consoleLoggerConsumerFactory({
   useTimestamp: true, 
   useLogLevel: true, 
   useUTC: true,
+  colors: {
+    debug: 'gray', 
+    info: 'green', 
+    warn: 'yellow', 
+    error: 'red', 
+    silent: 'black',
+    timestamp: 'whiteBright',
+    logLevel: 'blueBright',  
+  }
 })
 
 // import { dbLoggerConsumerFactory } from 'works';
