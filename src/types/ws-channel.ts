@@ -1,10 +1,13 @@
-import { AccessControl, QueryParams, QueryType } from './_common';
+import type { WebSocket } from 'ws';
+import type { AccessControl, QueryParams, QueryType } from './_common';
 
 interface WsChannel<T, Q extends QueryParams = any> {
   query?: Q;
   accessControl?: AccessControl<any, Q extends undefined ? void : QueryType<Q>>;
   select?: (query: QueryType<Q>, payload: T) => boolean | Promise<boolean>;
 }
+
+export type Listener = (socket: WebSocket, message: unknown) => any;
 
 export type WsChannelFactory = <T, Q extends QueryParams = any>(channel: WsChannel<T,Q>) => WsChannel<T,Q>
 
@@ -18,6 +21,11 @@ export interface WsClientMessage<T extends WsChannels, C extends keyof T = keyof
   channel: C;
   subscribe: boolean;
   query: QueryType<T[C]['query']>;
+}
+
+export interface WsClientMessageUntyped {
+  channel: string;
+  payload: unknown;
 }
 
 export type WsApiParser<T extends WsChannels> = {

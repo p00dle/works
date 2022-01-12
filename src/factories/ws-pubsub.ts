@@ -2,7 +2,7 @@ import type { WebSocket, WebSocketServer } from 'ws';
 import * as http from 'http';
 import { UserError } from '../build-tools/action-wrapper';
 
-import type { WsChannelPayload, WsChannels, WsClientMessage } from '../types/ws-channel';
+import type { WsChannelPayload, WsChannels, WsClientMessage, Listener, WsClientMessageUntyped } from '../types/ws-channel';
 import { isNonEmptyArray } from '../lib/utils';
 
 function sendResponse(socket: any, httpStatusCode: number, message: string) {
@@ -17,9 +17,14 @@ function sendResponse(socket: any, httpStatusCode: number, message: string) {
   res.end();
 }
 
+function isTypedClientMessage<T extends WsChannels>(message: WsClientMessage<T> | WsClientMessageUntyped): message is WsClientMessage<T> {
+  return 'subscribe' in message;
+}
+
 export class WebSocketPubSub<T extends WsChannels> {
   private isConnectionLive: Map<WebSocket, boolean> = new Map();
   private subscribers: Partial<Record<keyof T, {socket: WebSocket, query: Record<string, any>}[]>> = {};
+  private listeners: Partial<Record<string, Listener[]>> = {};
   private activeUserListeners: ((count: number) => any)[] = [];
   private wss: WebSocketServer | null = null
   private clientCount = 0;
@@ -34,10 +39,14 @@ export class WebSocketPubSub<T extends WsChannels> {
     if (this.wss === null) throw new UserError('Attempting to use WebSocket server before initialisation');
     return this.wss;
   }
-  private parseClientMessage(data?: any): WsClientMessage<T> | null {
-    const message = data ? JSON.parse(typeof data === 'string' ? data : data.toString()) : null;
-    if (!message || !message.type || !message.channel || !this.channelMap[message.channel]) return null;
-    return message;
+  private parseClientMessage(data?: any): WsClientMessage<T> | WsClientMessageUntyped | null {
+    try {
+      const message = data ? JSON.parse(typeof data === 'string' ? data : data.toString()) : null;
+      if (!message || !message.channel) return null;
+      return message;
+    } catch {
+      return null;
+    }
   }
   public useServer(wss: WebSocketServer): this {
     this.wss = wss;
@@ -115,19 +124,37 @@ export class WebSocketPubSub<T extends WsChannels> {
   private handleClientMessage(socket: WebSocket, data?: any) {
     const message = this.parseClientMessage(data);
     if (!message) return;
-    const { channel, subscribe, query } = message;
-    const channelSubscribers = this.subscribers[channel];
-    if (!Array.isArray(channelSubscribers)) return;
-    if (subscribe) {
-      const index = channelSubscribers.findIndex(sub => sub.socket === socket);
-      if (index >= 0) {
-        channelSubscribers[index] = {socket, query};
+    if (isTypedClientMessage(message)) {
+      const { channel, subscribe, query } = message;
+      const channelSubscribers = this.subscribers[channel];
+      if (!Array.isArray(channelSubscribers)) return;
+      if (subscribe) {
+        const index = channelSubscribers.findIndex(sub => sub.socket === socket);
+        if (index >= 0) {
+          channelSubscribers[index] = {socket, query};
+        } else {
+          channelSubscribers.push({socket, query});
+        }
       } else {
-        channelSubscribers.push({socket, query});
+        const index = channelSubscribers.findIndex(sub => sub.socket === socket);
+        if (index >= 0) channelSubscribers.splice(index, 1);
       }
     } else {
-      const index = channelSubscribers.findIndex(sub => sub.socket === socket);
-      if (index >= 0) channelSubscribers.splice(index, 1);
+      const { channel, payload } = message;
+      if (Array.isArray(this.listeners[channel])) this.listeners[channel]?.forEach(listener => listener(socket, payload))
+
+    }
+  }
+  public subscribe(channel: string, listener: Listener) {
+    const listeners = this.listeners[channel];
+    if (Array.isArray(listeners)) listeners.push(listener)
+    else this.listeners[channel] = [listener];
+  }
+  public unsubscribe(channel: string, listener: Listener) {
+    const listeners = this.listeners[channel];
+    if (Array.isArray(listeners)) {
+      const index = listeners.findIndex(l => l === listener);
+      if (index >= 0) listeners.splice(index, 1);
     }
   }
   private publishActiveUsers() {
