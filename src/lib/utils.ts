@@ -101,3 +101,17 @@ export function verifyHash(password: string, hash: string): boolean {
 export function generateRandomString(length: number) {
   return crypto.randomBytes(length).toString('base64').substring(0, length).replace(/[^a-zA-Z0-9]/g, '_');
 }
+
+export function isNumber(n: any): n is number {
+  return typeof n === 'number' && !isNaN(n);
+}
+
+export function toSqlDate(n: number): string {
+  const date = new Date(isNumber(n) ? n : 0);
+  return `${date.getFullYear()
+    }-${String(date.getMonth() + 1).padStart(2, '0')
+    }-${String(date.getDate()).padStart(2, '0')
+    } ${String(date.getHours()).padStart(2, '0')
+    }:${String(date.getMinutes()).padStart(2, '0')}`;
+}
+
