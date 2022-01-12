@@ -6,12 +6,14 @@ import { isProduction, bypassAuthentication, bypassAuthorisation} from '~/bootst
 import { logger } from '~/bootstrap/logger';
 
 import { userCsvEndpoints } from '~/components/user/csv-endpoints';
+import { userTelemetryLogsCsvEndpoints } from '~/components/user-telemetry-log/csv-endpoints';
 // @works:next_import
 
 export const csvRouter: Router = Router();
 
 const endpoints: CsvEndpoints[] = [
   userCsvEndpoints,
+  userTelemetryLogsCsvEndpoints,
   // @works:next_route
 ]
 
