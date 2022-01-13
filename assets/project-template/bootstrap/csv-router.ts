@@ -5,6 +5,7 @@ import { bootstrapCsvRouter } from 'works';
 import { isProduction, bypassAuthentication, bypassAuthorisation} from '~/bootstrap/global-env-vars';
 import { logger } from '~/bootstrap/logger';
 
+import { authenticationLogCsvEndpoints } from '~/components/authentication-log/csv-endpoints';
 import { userCsvEndpoints } from '~/components/user/csv-endpoints';
 import { userTelemetryLogsCsvEndpoints } from '~/components/user-telemetry-log/csv-endpoints';
 // @works:next_import
@@ -12,6 +13,7 @@ import { userTelemetryLogsCsvEndpoints } from '~/components/user-telemetry-log/c
 export const csvRouter: Router = Router();
 
 const endpoints: CsvEndpoints[] = [
+  authenticationLogCsvEndpoints,
   userCsvEndpoints,
   userTelemetryLogsCsvEndpoints,
   // @works:next_route

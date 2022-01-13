@@ -1,2 +1,4 @@
+./components/authentication-log/migrations/v001.sql
 ./components/key-value/migrations/v001.sql
 ./components/user/migrations/v001.sql
+./components/user/user-telemetry-log/v001.sql
