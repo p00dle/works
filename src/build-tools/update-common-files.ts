@@ -117,7 +117,7 @@ async function updateApiRouter(componentRelativePath: string, rootDir: string, n
 
 async function updateWsPubSub(componentRelativePath: string, rootDir: string, names: Names) {
   const name = names.single.camel;
-  const targetFile = path.join(rootDir, 'bootstrap', 'ws-pub-sub.ts');
+  const targetFile = path.join(rootDir, 'bootstrap', 'ws-pubsub.ts');
   const initialText = await file.read.text(targetFile);
   const importStatement = `import { ${name}WsApi } from '~/components${componentRelativePath}/http-endpoints';\n`;
   if (!initialText.includes(importStatement)) {
