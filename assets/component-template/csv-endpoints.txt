@@ -1,6 +1,6 @@
 // @works-lock-file:false
 
-import type { CsvApi, CsvColumn } from 'works';
+import type { CsvColumn } from 'works';
 import type { $[model_name] } from './types';
 
 import { csvEndpoint } from 'works';
