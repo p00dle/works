@@ -14,7 +14,7 @@ import { csvRouter } from '~/bootstrap/csv-router';
 export const httpRouter: Router = Router();
 const config = readWorksConfigFile();
 const rootDir = getRootDir();
-const relativeClientPath = config.spaClientPath
+const relativeClientPath = config.spaClientPath;
 if (!relativeClientPath) throw Error('Non SPA infrastructures not yet supported');
 const clientPath = path.join(rootDir, relativeClientPath);
 // TODO: add differentation for dealing wih spaClientPath being empty
