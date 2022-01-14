@@ -1,7 +1,7 @@
 import { ColumnType } from '../../types/table'
 
 export const tableTsTypeMap: Record<ColumnType, string> = {
-  'boolean': 'bool',
+  'boolean': 'boolean',
   'date': 'number',
   'datetime': 'number',
   'enum': '',
