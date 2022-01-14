@@ -1,35 +1,35 @@
 import type { UnsafeUser } from '~/components/user';
-import type { PassportParams } from 'works';
-
+// import type { PassportParams } from 'works';
+import type { PassportParams } from '../../../../';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { utils } from 'works';
+// import { utils } from 'works';
+import { utils } from '../../../../';
+import { logger } from '~/bootstrap/logger';
 import { unsafeReadUserByUsername } from '~/components/user/queries';
 import { createAuthenticationLog } from '~/components/authentication-log';
 
 export const passportParams: PassportParams<UnsafeUser, string> = {
   strategyName: 'local',
-  strategy: () => new LocalStrategy({passReqToCallback: true}, async function verifyFunction(req, username, password, done) {
+  strategy: geoLookup => new LocalStrategy({passReqToCallback: true}, async function verifyFunction(req, username, password, done) {
     try {
       const user = await unsafeReadUserByUsername({username});
-      if (!user) return done(null, false, { message: 'Invalid credentials'});
-      if (!utils.verifyHash(password, user.passwordHash)) {
-        await createAuthenticationLog({ 
-          username,
-          timestamp: Date.now(),
-          success: false,
-          ipAddress: req.socket.remoteAddress || 'unknown',
-        });
+      const ipAddress = req.socket.remoteAddress || 'unknown';
+      const { country, region, city } = typeof geoLookup === 'function' && ipAddress !== 'unknown' ? (await geoLookup(ipAddress)) : {country: null, region: null, city: null};
+      const authenticationLog = {
+        username, ipAddress, country, region, city,
+        timestamp: Date.now(),
+        success: false,
+      }
+      if (!user || !utils.verifyHash(password, user.passwordHash)) {
+        await createAuthenticationLog(authenticationLog);
         return done(null, false, { message: 'Invalid credentials'});
       } else {
-        await createAuthenticationLog({ 
-          username,
-          timestamp: Date.now(),
-          success: true,
-          ipAddress: req.socket.remoteAddress || 'unknown',
-        });
+        authenticationLog.success = true;
+        await createAuthenticationLog(authenticationLog);
         done(null, user);
       }
     } catch (err) {
+      logger.error(err instanceof Error ? (err.stack || 'Unknown error in passport verifyFunction') : String(err));
       done(err);
     }
   }),

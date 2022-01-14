@@ -7,7 +7,7 @@ export type { WsApiParser, WsChannels } from './types/ws-channel';
 export type { AccessControl } from './types/_common';
 export type { Table } from './types/table';
 export type { EmailEntity, MailerTemplate } from './types/mailer';
-export type { PassportParams } from './types/passport-params';
+export type { PassportParams, GeolocationLookup } from './types/passport-params';
 export type { Logger, LogLevel } from './types/logger';
 
 export { DateX, FiscalDateX } from './lib/datex';
