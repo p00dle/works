@@ -6,5 +6,8 @@ export interface AuthenticationLog {
     timestamp: number;
     username: string;
     success: boolean;
-    ipAddress: string;
+    ipAddress: string | null;
+    country: string | null;
+    region: string | null;
+    city: string | null;
 }

@@ -1,36 +1,36 @@
 // @works-lock-file:false
 
-import type { DatabasePoolType } from 'slonik';
+import type { DatabasePoolType, ValueExpressionType } from 'slonik';
 import { Readable } from 'stream';
-
 import { sql } from 'slonik';
+import { utils } from 'works';
+
 
 type ReadManyAuthenticationLogQuery = {
-    uuid: string;
-    timestamp: number;
-    username: string;
-    success: bool;
-    ipAddress: string;
+  username?: string;
+  since?: number;
 }
 
 /** @internal */
 export function streamAuthenticationLogsFactory(pool: DatabasePoolType) {
   return (query: ReadManyAuthenticationLogQuery) => {
     return new Promise<Readable>(resolve => {
+      const sqlChunks: ValueExpressionType[] = [];
+      if (utils.isNumber(query.since)) sqlChunks.push(sql`"timestamp" >= ${utils.toSqlDate(query.since)}`);
+      if (typeof query.username === 'string') sqlChunks.push(sql`"username" = ${query.username}`);
       pool.stream(sql`
       SELECT 
         "uuid",
         "timestamp",
         "username",
         "success",
-        "ipAddress"
+        "ipAddress",
+        "country",
+        "region",
+        "city"
       FROM "authenticationLogs"
-      WHERE
-        "uuid" = ${query.uuid} AND
-        "timestamp" = ${query.timestamp} AND
-        "username" = ${query.username} AND
-        "success" = ${query.success} AND
-        "ipAddress" = ${query.ipAddress}
+      ${sqlChunks.length > 0 ? sql`WHERE` : ''}
+        ${sql.join(sqlChunks, sql` AND \n          `)}
       ;`, resolve);
     });
   }

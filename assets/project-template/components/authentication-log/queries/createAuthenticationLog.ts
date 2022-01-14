@@ -15,13 +15,19 @@ export function createAuthenticationLogFactory(pool: DatabasePoolType) {
         "timestamp",
         "username",
         "success",
-        "ipAddress"
+        "ipAddress",
+        "country",
+        "region",
+        "city"
       )
       VALUES (
         ${payload.timestamp},
         ${payload.username},
         ${payload.success},
-        ${payload.ipAddress}
+        ${payload.ipAddress},
+        ${payload.country},
+        ${payload.region},
+        ${payload.city}
       );`
     );
   }

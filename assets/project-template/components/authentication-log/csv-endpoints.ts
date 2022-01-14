@@ -10,6 +10,8 @@ import { streamAuthenticationLogs } from './queries';
 const authenticationLogAllPropsQuery = {
   timezoneOffset: 'number',
   dst: ['eu', 'us', 'none'],
+  since: 'number?',
+  username: 'string?',
 } as const;
 
 const AuthenticationLogCsvColumns: CsvColumn<AuthenticationLog>[] = [
