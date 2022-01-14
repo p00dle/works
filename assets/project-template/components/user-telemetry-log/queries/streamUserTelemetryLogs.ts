@@ -13,22 +13,7 @@ type StreamUserTelemetryLogsQuery = {
 export function streamUserTelemetryLogsFactory(pool: DatabasePoolType) {
   return (query: StreamUserTelemetryLogsQuery) => {
     return new Promise<Readable>(resolve => {
-      if (utils.isNumber(query.since)) {
-        pool.stream(sql`
-          SELECT 
-            "uuid",
-            "type",
-            "username",
-            "path",
-            "timestamp",
-            "interval",
-            "details"
-          FROM "userTelemetryLogs"
-          WHERE "timestamp" >= ${utils.toSqlDate(query.since)}
-          ;`, resolve);
-      } else {
-
-        pool.stream(sql`
+      pool.stream(sql`
         SELECT 
           "uuid",
           "type",
@@ -38,8 +23,8 @@ export function streamUserTelemetryLogsFactory(pool: DatabasePoolType) {
           "interval",
           "details"
         FROM "userTelemetryLogs"
+        ${utils.isNumber(query.since) ? sql`WHERE "timestamp" >= ${utils.toSqlDate(query.since)}` : sql``}
         ;`, resolve);
-      }
     });
   }
 }
