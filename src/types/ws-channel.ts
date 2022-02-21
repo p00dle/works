@@ -1,7 +1,7 @@
 import type { WebSocket } from 'ws';
 import type { AccessControl, QueryParams, QueryType } from './_common';
 
-interface WsChannel<T, Q extends QueryParams = any> {
+export interface WsChannel<T, Q extends QueryParams = any> {
   query?: Q;
   accessControl?: AccessControl<any, Q extends undefined ? void : QueryType<Q>>;
   select?: (query: QueryType<Q>, payload: T) => boolean | Promise<boolean>;
