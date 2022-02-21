@@ -43,7 +43,7 @@ export function formatValue(value: any, type: ColumnType): SQL {
   // TODO: test how it acts if there are newline characters in the string
 }
 
-
+// TODO: handle lockColumnNames
 export function makeForeignKeyName(localTable: Table, foreignKey: TableForeignKey, config: WorksConfigFile, isEnum = false ): SQL {
   if (foreignKey.name) return foreignKey.name;
   const localTableName = getNames(localTable.name)[config.naming.dbTables[0]][config.naming.dbTables[1]];
