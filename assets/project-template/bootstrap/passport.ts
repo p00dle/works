@@ -11,5 +11,5 @@ const geoLookup: GeolocationLookup | undefined = undefined;
 export const [passport, passportAuthenticator]: [
   Passport.Authenticator<Express.Handler, any, any, Passport.AuthenticateOptions>,
   Middleware
-] = singleStrategyPassportFactory(passportParams);
+] = singleStrategyPassportFactory(passportParams, geoLookup);
 
