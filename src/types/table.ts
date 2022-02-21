@@ -44,6 +44,7 @@ export interface TableForeignKey {
 
 export interface Table {
   lock: boolean;
+  lockColumnNames?: boolean;
   name: string;
   columns: TableColumn[];
   foreignKeys?: TableForeignKey[];

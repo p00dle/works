@@ -24,8 +24,8 @@ export type Names = Record<SingleOrPlural, Record<NamingCase, string>>;
 export function getNames(str: string): Names {
   if (typeof str !== 'string') throw new UserError('Expected str to be a string');
   if (str.length === 0) throw new UserError('Expected str to be a non-zero length string');
+  if (/["']/.test(str)) throw new UserError('Quotes not allowed in a name');
   if (/[^[a-z_-]/i.test(str)) {
-    console.warn(`WARN: name contains non allowed characters; name conversion skipped; "${str}" `);
     const notConverted = { lower: str, upper: str, camel: str, snake: str, kebab: str, pascal: str, title: str};
     return {
       single: notConverted,
