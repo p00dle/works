@@ -134,7 +134,12 @@ export async function scanProject(reconcile: boolean) {
   const migrationFileVersion = reconcile ? 'v001' : await getVersion(migrationsPath, true);
   if (reconcile) {
     const migrationFiles = await dir.read(migrationsPath);
-    await Promise.all(migrationFiles.map(filename => file.delete(path.join(migrationsPath, filename))));
+    await Promise.all(migrationFiles.map(async filename => {
+      const filePath = path.join(migrationsPath, filename);
+      if (await file.isFile(filePath)) {
+        await file.delete(path.join(migrationsPath, filename));
+      }
+    }));
   }
   await file.write.text(path.join(migrationsPath, migrationFileVersion + '.txt'), migrationPaths.join('\n'));
   await file.write.json(getTableCachePath(), newCache);
