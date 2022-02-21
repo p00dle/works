@@ -3,7 +3,7 @@ import type { RequestHandler } from 'express';
 export type Middleware = RequestHandler;
 export type { GetEndpoints, HttpGetApiParser, GetEndpoint, PostEndpoints, HttpPostApiParser, PostEndpoint } from './types/endpoint';
 export type { CsvColumn, CsvApiParser, CsvEndpoints } from './types/csv-endpoint';
-export type { WsApiParser, WsChannels } from './types/ws-channel';
+export type { WsApiParser, WsChannels, WsChannel } from './types/ws-channel';
 export type { AccessControl } from './types/_common';
 export type { Table } from './types/table';
 export type { EmailEntity, MailerTemplate } from './types/mailer';
