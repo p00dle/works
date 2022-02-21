@@ -19,22 +19,26 @@ function getColumnTsType(col: TableColumn): string {
       tsType = col.enumValues.map(val => `'${val}'`).join(' | ');
     }
   }
-  return `  ${col.name}: ${tsType};`;
+  return `  '${col.name}': ${tsType};`;
 }
 
 
 
 function getColumnQueryType(col: TableColumn): string {
-  return `${col.name}: ${
+  return `'${col.name}': ${
     col.type === 'enum' 
       ? `[${(col.enumValues as string[]).map(val => `'${val}'`).join(', ')}]`
       : `'${queryParamTypes[col.type]}'`
   },`;
 }
 
-function getCsvColumn(col: TableColumn): string {
-  const names = getNames(col.name);
-  return `{prop: '${col.name}', type: '${csvTypeMap[col.type]}', label: '${names.single.title}'},`
+function getCsvColumn(col: TableColumn, lockColumnNames = false): string {
+  if (lockColumnNames) {
+    return `{prop: '${col.name}', type: '${csvTypeMap[col.type]}', label: '${col.name}'},`
+  } else {
+    const names = getNames(col.name);
+    return `{prop: '${col.name}', type: '${csvTypeMap[col.type]}', label: '${names.single.title}'},`
+  }
 }
 
 export function getVariables(table: Table, config: WorksConfigFile, component: string) {
@@ -53,25 +57,25 @@ export function getVariables(table: Table, config: WorksConfigFile, component: s
     csv_filename: names.plural.kebab,
     sql_table: names.plural.camel,
     query_name_plural: names.plural.pascal,
-    query_primary: primaryColumnNames.map(col => getNames(col).single.pascal).join(''),
+    query_primary: primaryColumnNames.map(col => table.lockColumnNames ? col : getNames(col).single.pascal).join(''),
     ts_column_names: table.columns.map(col => `'${col.name}',`).join('\n  '),
     sql_columns: table.columns.map(col => `"${col.name}"`).join(',\n        '),
-    sql_insert_columns: table.columns.map(col => col.type === 'json' || col.type === 'jsonb' ? '${JSON.stringify(payload.' + col.name + ')}' : '${payload.' + col.name + '}').join(',\n        '),
-    ts_insert: table.columns.map(col => `payload.${col.name}`).join(',\n          '),
+    sql_insert_columns: table.columns.map(col => col.type === 'json' || col.type === 'jsonb' ? '${JSON.stringify(payload[\'' + col.name + '\'])}' : '${payload[\'' + col.name + '\']}').join(',\n        '),
+    ts_insert: table.columns.map(col => `payload['${col.name}']`).join(',\n          '),
     sql_column_types: table.columns.map(col => `'${tableDbTypeMap[col.type]}'`).join(',\n          '),
     ts_primary: primaryColumnNames[0] === '' ? '// no primary columns in the table' : primaryColumns.map(getColumnTsType).join('\n  '),
     sql_primary_where: primaryColumnNames[0] === '' ? 'TRUE' : primaryColumnNames
-      .map(col => `"${col}" = ${'${query.' + col + '}'}`).join(' AND\n        '),
-    sql_all_where: table.columns.map(col => `"${col.name}" = ${'${query.' + col.name + '}'}`).join(' AND\n        '),
+      .map(col => `"${col}" = ${'${query[\'' + col + '\']}'}`).join(' AND\n        '),
+    sql_all_where: table.columns.map(col => `"${col.name}" = ${'${query[\'' + col.name + '\']}'}`).join(' AND\n        '),
     sql_primary_comma: primaryColumnNames[0] === '' ? '' : primaryColumnNames.map(col => `"${col}"`).join(',\n'),
     sql_columns_set: table.columns.filter(col => !primaryColumnNames.includes(col.name))
-      .map(col => `"${col.name}" = ${'${payload.' + col.name + '}'}`).join(',\n        '),
+      .map(col => `"${col.name}" = ${'${payload[\'' + col.name + '\']}'}`).join(',\n        '),
     ts_model_props: table.columns.map(getColumnTsType).join('\n  '),
     endpoint: names.plural.lower,
     endpoint_primary_param: primaryColumnNames[0] === '' ? '' : primaryColumnNames.map(name => ':' + name).join('/'),
     ts_endpoint_primary_query: primaryColumnNames[0] === '' ? 'undefined' : `{${primaryColumns.map(getColumnQueryType).join(' ')}}`,
     ts_endpoint_all_query: table.columns.map(getColumnQueryType).join('\n  '),
-    csv_columns: table.columns.filter(col => col.type !== 'json' && col.type !== 'jsonb').map(getCsvColumn).join('\n  '),
+    csv_columns: table.columns.filter(col => col.type !== 'json' && col.type !== 'jsonb').map(col => getCsvColumn(col, table.lockColumnNames)).join('\n  '),
   }
 }
 

@@ -8,8 +8,8 @@ import { allowAll } from '~/access-control';
 import { stream$[query_name_plural] } from './queries';
 
 const $[ts_name]AllPropsQuery = {
-  timezoneOffset: 'number',
-  dst: ['eu', 'us', 'none'],
+  'timezoneOffset': 'number',
+  'dst': ['eu', 'us', 'none'],
   $[ts_endpoint_all_query]
 } as const;
 
