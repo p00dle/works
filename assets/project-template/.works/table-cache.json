@@ -1,0 +1,161 @@
+{
+  "/key-value": {
+    "lock": true,
+    "name": "works_keyValues",
+    "columns": [
+      {
+        "name": "key",
+        "type": "text",
+        "unique": true,
+        "primary": true,
+        "indexed": true
+      },
+      {
+        "name": "value",
+        "type": "jsonb",
+        "defaultTo": null
+      }
+    ]
+  },
+  "/authentication-log": {
+    "lock": false,
+    "name": "authenticationLogs",
+    "columns": [
+      {
+        "name": "uuid",
+        "type": "uuid",
+        "defaultTo": "uuid",
+        "primary": true
+      },
+      {
+        "name": "timestamp",
+        "type": "datetime",
+        "nullable": false
+      },
+      {
+        "name": "username",
+        "type": "text",
+        "nullable": false
+      },
+      {
+        "name": "success",
+        "type": "boolean",
+        "nullable": false
+      },
+      {
+        "name": "ipAddress",
+        "type": "text",
+        "nullable": false
+      }
+    ]
+  },
+  "/user-telemetry-log": {
+    "lock": true,
+    "name": "userTelemetryLogs",
+    "columns": [
+      {
+        "name": "uuid",
+        "type": "uuid",
+        "unique": true
+      },
+      {
+        "name": "type",
+        "type": "string",
+        "nullable": false
+      },
+      {
+        "name": "username",
+        "type": "text",
+        "nullable": false
+      },
+      {
+        "name": "path",
+        "type": "string",
+        "nullable": false
+      },
+      {
+        "name": "timestamp",
+        "type": "timestamp",
+        "nullable": false
+      },
+      {
+        "name": "interval",
+        "type": "integer",
+        "nullable": true
+      },
+      {
+        "name": "details",
+        "type": "jsonb",
+        "nullable": true
+      }
+    ]
+  },
+  "/user": {
+    "lock": true,
+    "name": "users",
+    "columns": [
+      {
+        "name": "uuid",
+        "type": "uuid",
+        "unique": true,
+        "primary": true
+      },
+      {
+        "name": "username",
+        "type": "text",
+        "unique": true,
+        "indexed": true
+      },
+      {
+        "name": "passwordHash",
+        "type": "text",
+        "nullable": false
+      },
+      {
+        "name": "role",
+        "type": "enum",
+        "enumValues": [
+          "admin",
+          "non-admin"
+        ],
+        "nullable": false,
+        "defaultTo": "non-admin"
+      },
+      {
+        "name": "email",
+        "type": "text",
+        "unique": true,
+        "indexed": true
+      },
+      {
+        "name": "firstNames",
+        "type": "text"
+      },
+      {
+        "name": "lastName",
+        "type": "text"
+      },
+      {
+        "name": "lastLogin",
+        "type": "datetime"
+      },
+      {
+        "name": "passwordLastChanged",
+        "type": "datetime"
+      },
+      {
+        "name": "passwordResetToken",
+        "type": "text"
+      },
+      {
+        "name": "passwordResetTokenExpiry",
+        "type": "datetime"
+      },
+      {
+        "name": "permissions",
+        "type": "jsonb",
+        "defaultTo": {}
+      }
+    ]
+  }
+}
