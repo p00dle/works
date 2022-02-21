@@ -1,11 +1,11 @@
 // @works:next_type_import
 
-// @works:next_value_import
+// @works:next_import
 
 
 export type AllKeyValues = 
   & { }
-  // @works:next_type
+  // @works:next_types
 ;
 
 export const initialKeyValues: Partial<AllKeyValues> = [
