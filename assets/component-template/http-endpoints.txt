@@ -3,7 +3,7 @@
 import { endpoint } from 'works';
 import { allowAll } from '~/access-control';
 import {
-  read$[query_name]By$[query_primary],
+  read$[query_name]ByPrimary,
   readMany$[query_name_plural],
   create$[query_name],
   createMany$[query_name_plural],
@@ -21,12 +21,12 @@ const $[ts_name]AllPropsQuery = {
 } as const;
 
 export const $[ts_name]GetEndpoints = {
-  '/$[endpoint]/$[endpoint_primary_param]': endpoint({
+  '/$[endpoint]/$[endpoint_primary_param]': endpoint.get({
     accessControl: defaultAccessControl,
     query: $[ts_endpoint_primary_query],
-    controller: read$[query_name]By$[query_primary],
+    controller: read$[query_name]ByPrimary,
   }),
-  '/$[endpoint]': endpoint({
+  '/$[endpoint]': endpoint.get({
     accessControl: defaultAccessControl,
     query: $[ts_name]AllPropsQuery,
     controller: readMany$[query_name_plural],
@@ -34,36 +34,40 @@ export const $[ts_name]GetEndpoints = {
 } as const;
 
 export const $[ts_name]PostEndpoints = {
-  '/$[endpoint]/create': endpoint({
+  '/$[endpoint]/create': endpoint.post({
     accessControl: defaultAccessControl,
+    query: {},
     controller: create$[query_name],
   }),
-  '/$[endpoint]/create-many': endpoint({
+  '/$[endpoint]/create-many': endpoint.post({
     accessControl: defaultAccessControl,
+    query: {},
     controller: createMany$[query_name_plural],
   }),
 
-  '/$[endpoint]/delete-many': endpoint({
+  '/$[endpoint]/delete-many': endpoint.post({
     accessControl: defaultAccessControl,
     query: $[ts_endpoint_primary_query],
     controller: deleteMany$[query_name_plural],
   }),
-  '/$[endpoint]/update': endpoint({
+  '/$[endpoint]/update': endpoint.post({
     accessControl: defaultAccessControl,
     query: $[ts_endpoint_primary_query],
     controller: update$[query_name],
   }),
-  '/$[endpoint]/update-many': endpoint({
+  '/$[endpoint]/update-many': endpoint.post({
     accessControl: defaultAccessControl,
     query: $[ts_name]AllPropsQuery,
     controller: updateMany$[query_name_plural],
   }),
-  '/$[endpoint]/upsert': endpoint({
+  '/$[endpoint]/upsert': endpoint.post({
     accessControl: defaultAccessControl,
+    query: {},
     controller: upsert$[query_name],
   }),
-  '/$[endpoint]/upsert-many': endpoint({
+  '/$[endpoint]/upsert-many': endpoint.post({
     accessControl: defaultAccessControl,
+    query: {},
     controller: upsertMany$[query_name_plural],
   }),     
 } as const;
