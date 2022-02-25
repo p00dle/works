@@ -13,4 +13,16 @@ export const csvTypeMap: Record<ColumnType, CsvColumnType> = {
   'serial': 'integer',
   'text': 'string',
   'uuid': 'string',
+
+  'boolean[]': 'string',
+  'date[]': 'string',
+  'datetime[]': 'string',
+  'enum[]': 'string',
+  'float[]': 'string',
+  'integer[]': 'string',
+  'json[]': 'string',
+  'jsonb[]': 'string',
+  'serial[]': 'string',
+  'text[]': 'string',
+  'uuid[]': 'string',
 }

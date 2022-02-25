@@ -1,15 +1,15 @@
 export type ColumnType = 
-  | 'text'
-  | 'float'
-  | 'integer'
-  | 'datetime'
-  | 'date'
-  | 'boolean'
-  | 'enum'
-  | 'serial'
-  | 'json'
-  | 'jsonb'
-  | 'uuid'
+  | 'text'        | 'text[]'
+  | 'float'       | 'float[]'
+  | 'integer'     | 'integer[]' 
+  | 'datetime'    | 'datetime[]' 
+  | 'date'        | 'date[]' 
+  | 'boolean'     | 'boolean[]' 
+  | 'enum'        | 'enum[]' 
+  | 'serial'      | 'serial[]' 
+  | 'json'        | 'json[]' 
+  | 'jsonb'       | 'jsonb[]' 
+  | 'uuid'        | 'uuid[]' 
 ;
 // TODO: add array types
 

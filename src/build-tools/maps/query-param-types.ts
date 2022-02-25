@@ -14,4 +14,16 @@ export const queryParamTypes: Record<ColumnType, QueryParamType> = {
   'serial': 'number',
   'text': 'string',
   'uuid': 'string',
+
+  'boolean[]': 'boolean',
+  'date[]': 'date',
+  'datetime[]': 'datetime',
+  'float[]': 'number',
+  'integer[]': 'number',
+  'json[]': 'string',
+  'jsonb[]': 'string',
+  'enum[]': 'string[]',
+  'serial[]': 'number',
+  'text[]': 'string',
+  'uuid[]': 'string',  
 }
