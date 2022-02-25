@@ -38,6 +38,7 @@ export function formatValue(value: any, type: ColumnType): SQL {
   if (type === 'json' || type === 'jsonb') return `'${JSON.stringify(value)}'`;
   if (type === 'enum' || type === 'text') return `'${value}'`;
   if (type === 'uuid' && value === 'uuid') return `uuid_generate_v4()`;
+  if (value === 'now' && (type === 'date' || type === 'datetime')) return `now()`;
   return `'${value}'`;
   // TODO: add defaults for date and datetime
   // TODO: test how it acts if there are newline characters in the string
