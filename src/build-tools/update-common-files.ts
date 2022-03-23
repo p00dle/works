@@ -48,11 +48,11 @@ const commonFilesMetadata: Record<Filepath, { next_import: WorksDirectiveReplace
   },
   'bootstrap/api-router.ts': {
     next_import: (names, componentPath) => `import { ${names.single.camel}GetEndpoints, ${names.single.camel}PostEndpoints } from '~/components${componentPath}/http-endpoints';`,
-    next_get_endpoints: names => `  ${names.single.camel}GetEndpoints`,
-    next_post_endpoints: names => `  ${names.single.camel}PostEndpoints`,
+    next_get_endpoints: names => `  ${names.single.camel}GetEndpoints,`,
+    next_post_endpoints: names => `  ${names.single.camel}PostEndpoints,`,
   },
   'bootstrap/ws-pubsub.ts': {
-    next_import: (names, componentPath) => `import { ${names.single.camel}WsChannels } from '~/components${componentPath}/http-endpoints';`,
+    next_import: (names, componentPath) => `import { ${names.single.camel}WsChannels } from '~/components${componentPath}/ws-channels';`,
     next_route: names => `  ${names.single.camel}WsChannels,`,
   }
 }
@@ -63,8 +63,6 @@ function replaceWorksDirectives(text: string, directives: Record<string, string>
   let output = text;
   for (const [directive, replaceWith] of Object.entries(directives)) {
     if (!regexCache[directive]) regexCache[directive] = new RegExp(`[\\t ]*//[\\t ]*@works:${directive}`);
-    console.log(directive, regexCache[directive], regexCache[directive].test(output));
-
     output = output.replace(regexCache[directive], match => {
       return replaceWith + '\n' + match;
     });
