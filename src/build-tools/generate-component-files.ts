@@ -71,7 +71,7 @@ export function getVariables(table: Table, config: WorksConfigFile, component: s
     sql_columns_set: table.columns.filter(col => !primaryColumnNames.includes(col.name))
       .map(col => `"${col.name}" = ${'${payload[\'' + col.name + '\']}'}`).join(',\n        '),
     ts_model_props: table.columns.map(getColumnTsType).join('\n  '),
-    endpoint: names.plural.lower,
+    endpoint: names.plural.kebab,
     endpoint_primary_param: primaryColumnNames[0] === '' ? '' : primaryColumnNames.map(name => ':' + name).join('/'),
     ts_endpoint_primary_query: primaryColumnNames[0] === '' ? 'undefined' : `{${primaryColumns.map(getColumnQueryType).join(' ')}}`,
     ts_endpoint_all_query: table.columns.map(getColumnQueryType).join('\n  '),
@@ -101,7 +101,6 @@ async function isFileLocked(filePath: string): Promise<boolean> {
   return match[1].toLowerCase() === 'true';
 
 }
-
 export async function generateComponentFiles(componentPath: string, table: Table) {
   const worksConfig = readWorksConfigFile();
   const variables = getVariables(table, worksConfig, path.basename(componentPath));
