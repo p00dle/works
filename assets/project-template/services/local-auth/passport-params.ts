@@ -1,9 +1,7 @@
 import type { UnsafeUser } from '~/components/user';
-// import type { PassportParams } from 'works';
-import type { PassportParams } from '../../../../';
+import type { PassportParams } from 'works';
 import { Strategy as LocalStrategy } from 'passport-local';
-// import { utils } from 'works';
-import { utils } from '../../../../';
+import { utils } from 'works';
 import { logger } from '~/bootstrap/logger';
 import { unsafeReadUserByUsername } from '~/components/user/queries';
 import { createAuthenticationLog } from '~/components/authentication-log';

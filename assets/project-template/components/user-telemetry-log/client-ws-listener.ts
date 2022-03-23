@@ -1,4 +1,4 @@
-import { WebSocketPubSub } from 'works';
+import type { WebSocketPubSub } from 'works';
 import type { UserTelemetryLog } from './types';
 
 import { addUserTelemetryLog } from './queries';
