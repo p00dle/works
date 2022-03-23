@@ -78,6 +78,8 @@ export async function reconcile() {
   return scanProject(true);
 }
 
+// TODO: add | null to nullable columns
+
 export async function scanProject(reconcile: boolean) {
   if (reconcile) {
     const isProduction = envVar({var: 'NODE_ENV', type: 'boolean', defaultTo: false, parse: str => str.toLowerCase().includes('prod')});
