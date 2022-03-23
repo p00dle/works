@@ -9,6 +9,7 @@ export type { Table } from './types/table';
 export type { EmailEntity, MailerTemplate } from './types/mailer';
 export type { PassportParams, GeolocationLookup } from './types/passport-params';
 export type { Logger, LogLevel } from './types/logger';
+export type { WebSocketPubSub } from './factories/ws-pubsub'
 
 export { DateX, FiscalDateX } from './lib/datex';
 export { endpoint } from './factories/endpoint';
@@ -34,4 +35,8 @@ export { pgEventsFactory } from './defaults/pg-events';
 export { consoleLoggerConsumerFactory } from './defaults/console-log-consumer';
 export { logFactory } from './factories/logger';
 
-// add logging everywhere
+// TODO: add logging everywhere
+
+// TODO: fix api routes for multi-word names: /task-events instead of /taskevents
+
+// TODO: fix situation when scanning adds new migrations when no migration is needed
