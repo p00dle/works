@@ -126,13 +126,31 @@ export const [daysUpToMonth, daysUpToMonthLeap] = ((): [number[], number[]] => {
 
 export const getLocalTimezoneOffset = (): number => {
   const date = new Date();
-  const jan = new Date(date.getFullYear(), 0, 1);
-  return jan.getTimezoneOffset() / 60;
+  const julyDate = new Date(date.getFullYear(), 6, 1);
+  return julyDate.getTimezoneOffset() / 60;
 };
 
+function getTimezoneFromDate(date: Date): string { // return '[+-]xxxx'
+  return date instanceof Date ? date.toString().slice(28,33) : '';
+}
+
 export const getLocalDST = (): DST => {
-  return 'none';
-  // TODO: add local DST detection
+  const nowDate = new Date();
+  const date = new Date(nowDate.getFullYear(), 6, 1);
+  const summerTimezone = getTimezoneFromDate(date);
+  date.setMonth(11);
+  if (getTimezoneFromDate(date) === summerTimezone) {
+    return 'none';
+  }
+  date.setMonth(10);
+  if (date.getDay() === 6) {
+    date.setDate(date.getDate() - 1);
+  }
+  if (getTimezoneFromDate(date) === summerTimezone) {
+    return 'us';
+  } else {
+    return 'eu';
+  }
 };
 
 export function getLastMonday(): number {
