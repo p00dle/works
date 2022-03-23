@@ -42,7 +42,22 @@ export interface TableForeignKey {
   onDelete?: OnUpdateDeleteAction;
 }
 
+// type TableLockType =
+//   | 'none'
+//   | 'column-names'
+//   | 'queries'
+//   | 'migrations'
+//   | 'http-api'
+//   | 'ws-api'
+//   | 'types'
+//   | 'ws-channels'
+//   | 'events'
+// ;
+
+// // TODO: add custom lock implementation
+
 export interface Table {
+  // lock?: TableLockType | TableLockType[];
   lock: boolean;
   lockColumnNames?: boolean;
   name: string;
