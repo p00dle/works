@@ -25,16 +25,16 @@ const read$[query_name]ByPrimaryCache = cache(read$[query_name]ByPrimaryFactory(
 const readMany$[query_name_plural]Cache = cache(readMany$[query_name_plural]Factory(dbPool));
 export const read$[query_name]ByPrimary = read$[query_name]ByPrimaryCache.controller;
 export const readMany$[query_name_plural] = readMany$[query_name_plural]Cache.controller;
-events.subscribe('$[sql_table]', '*', () => {
+events.subscribe('$[csv_filename]', '*', () => {
   read$[query_name]ByPrimaryCache.invalidate();
   readMany$[query_name_plural]Cache.invalidate();
 });
 */
 
-export const create$[query_name] = events.wrapper('$[sql_table]', 'create-one', create$[query_name]Factory(dbPool));
-export const createMany$[query_name_plural] = events.wrapper('$[sql_table]', 'create-many', createMany$[query_name_plural]Factory(dbPool));
-export const deleteMany$[query_name_plural] = events.wrapper('$[sql_table]', 'delete-many', deleteMany$[query_name_plural]Factory(dbPool));
-export const update$[query_name] = events.wrapper('$[sql_table]', 'update-one', update$[query_name]Factory(dbPool));
-export const updateMany$[query_name_plural] = events.wrapper('$[sql_table]', 'update-many', updateMany$[query_name_plural]Factory(dbPool));
-export const upsert$[query_name] = events.wrapper('$[sql_table]', 'upsert-one', upsert$[query_name]Factory(dbPool));
-export const upsertMany$[query_name_plural] = events.wrapper('$[sql_table]', 'upsert-many', upsertMany$[query_name_plural]Factory(dbPool));
+export const create$[query_name] = events.wrapper('$[csv_filename]', 'create-one', create$[query_name]Factory(dbPool));
+export const createMany$[query_name_plural] = events.wrapper('$[csv_filename]', 'create-many', createMany$[query_name_plural]Factory(dbPool));
+export const deleteMany$[query_name_plural] = events.wrapper('$[csv_filename]', 'delete-many', deleteMany$[query_name_plural]Factory(dbPool));
+export const update$[query_name] = events.wrapper('$[csv_filename]', 'update-one', update$[query_name]Factory(dbPool));
+export const updateMany$[query_name_plural] = events.wrapper('$[csv_filename]', 'update-many', updateMany$[query_name_plural]Factory(dbPool));
+export const upsert$[query_name] = events.wrapper('$[csv_filename]', 'upsert-one', upsert$[query_name]Factory(dbPool));
+export const upsertMany$[query_name_plural] = events.wrapper('$[csv_filename]', 'upsert-many', upsertMany$[query_name_plural]Factory(dbPool));
