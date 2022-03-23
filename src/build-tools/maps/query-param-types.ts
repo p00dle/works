@@ -24,6 +24,7 @@ export const queryParamTypes: Record<ColumnType, QueryParamType> = {
   'jsonb[]': 'string',
   'enum[]': 'string[]',
   'serial[]': 'number',
-  'text[]': 'string',
+  // TODO: this is a temporary fix for array columns; we need something more robust in the future
+  'text[]': 'string[]',
   'uuid[]': 'string',  
 }
