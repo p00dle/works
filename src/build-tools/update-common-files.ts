@@ -70,10 +70,29 @@ function replaceWorksDirectives(text: string, directives: Record<string, string>
   return output;
 }
 
+let commonFilesLocked = false;
+const commonFilesUnlockResolvers: (() => any)[] = [];
+
+function waitForCommonFilesUnlock(): Promise<void> {
+  return commonFilesLocked ? new Promise(resolve => commonFilesUnlockResolvers.push(resolve)) : Promise.resolve();
+}
+
+function lockCommonFiles() {
+  commonFilesLocked = true;
+}
+
+function unlockCommonFiles() {
+  commonFilesLocked = false;
+  const resolver = commonFilesUnlockResolvers.shift();
+  if (resolver) resolver();
+}
+
 // TODO: account for different naming conventions
 export async function updateCommonFiles(componentPath: string, table: Table) {
   const rootDir = getRootDir();
   const names = getNames(path.basename(componentPath));
+  await waitForCommonFilesUnlock();
+  lockCommonFiles();
   await Promise.all(Object.entries(commonFilesMetadata).map(async ([relativeTargetPath, directiveReplacers]) => {
     const targetFile = path.join(rootDir, relativeTargetPath);
     const fileText = await file.read.text(targetFile);
@@ -81,14 +100,10 @@ export async function updateCommonFiles(componentPath: string, table: Table) {
     for (const [directive, directiveReplacer] of Object.entries(directiveReplacers)) {
       directives[directive] = directiveReplacer(names, componentPath);
     }
-    console.log('current file: ');
-    console.log(fileText);
-    console.log('next_import: ' + directives.next_import);
-    console.log('!fileText.includes(directives.next_import): ' + !fileText.includes(directives.next_import));
     if (!fileText.includes(directives.next_import)) {
       const updatedFileText = replaceWorksDirectives(fileText, directives);
-      console.log('\n\n\n------------');
       await file.write.text(targetFile, updatedFileText);
     }
   }));
+  unlockCommonFiles();
 }
