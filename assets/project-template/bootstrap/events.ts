@@ -1,7 +1,7 @@
 import type { AllEvents } from '~/types/events';
 
-import { eventsFactory } from '~/lib/events';
 import { logger } from '~/bootstrap/logger';
+import { eventsFactory } from 'works';
 
 import { singleInstanceEvents } from 'works';
 const baseEventEmitter = singleInstanceEvents;
