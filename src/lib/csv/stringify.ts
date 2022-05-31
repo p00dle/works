@@ -18,7 +18,7 @@ function stringifyersByTypeFactory(dateOptions: CsvOptions['dateOptions']): Stri
     time: (x) => datexTime.stringify(x),
     custom: x => x === undefined || x === null ?  '' : '' + x,
   }
-};
+}
 
 function getStringify(prop: string, stringifyers: StringifyersByType): (a: any) => string {
   const [isTime, isDate, isTimestamp] = ['Time', 'Date', 'Timestamp'].map(
@@ -52,17 +52,17 @@ function escape(str: string, quote: string, escapeQuote: string, quoteRegex: Reg
 
 
 export function stringifyCsv<T>(arr: T[] | readonly T[], columns?: CsvColumns<T>, options?: CsvParams) {
-  const { delimiter, quote, escapeQuote, ignoreUnderscoredProps, rowSeparator, dateOptions } = normalizeOptions(options);
+  const { delimiter, quote, escapeQuote, ignoreUnderscoredProps, rowSeparator, dateOptions, skipHeader } = normalizeOptions(options);
   const stringifyersByType = stringifyersByTypeFactory(dateOptions);
   const quoteRegex = new RegExp(quote, 'g');
   const cols = Array.isArray(columns) ? columns : makeColumns(arr, stringifyersByType, ignoreUnderscoredProps);
-  const headerRow = cols.map(col => col.label || col.prop).join(delimiter);
   const stringifyers = cols.map(col => col.type === 'custom' ? col.stringify || stringifyersByType[col.type] : stringifyersByType[col.type] );
   const width = cols.length;
   const height = arr.length;
   const props = cols.map(col => col.prop);
-  const rows = [headerRow];
+  const rows = skipHeader ? [] : [cols.map(col => col.label || col.prop).join(delimiter)];
   const shouldTestForEscape = cols.map(col => col.type === 'string' || col.type === 'custom');
+  let rowIndex = skipHeader ? 0 : 1;
   for (let row = 0; row < height; row++ ) {
     const rowStrings: string[] = [];
     for (let col = 0; col < width; col++ ) {
@@ -70,7 +70,7 @@ export function stringifyCsv<T>(arr: T[] | readonly T[], columns?: CsvColumns<T>
       if (shouldTestForEscape[col] && shouldEscape(str, delimiter, quote, rowSeparator)) str = escape(str, quote, escapeQuote, quoteRegex);
       rowStrings[col] = str;
     }
-    rows[row + 1] = rowStrings.join(delimiter);
+    rows[rowIndex++] = rowStrings.join(delimiter);
   }
   return rows.join(rowSeparator);
 }

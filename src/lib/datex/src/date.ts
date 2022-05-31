@@ -19,8 +19,8 @@ const variables: Record<string, Record<string, string>> = {
   ampm:         { full: 'AM' }
 };
 
-const formatInfo: {[str: string]: {type: VariableType, format: FormatType}} = (() => {
-  const output: Record<string, { type: VariableType, format: FormatType }> = {};
+const formatInfo: {[str: string]: {type: VariableType; format: FormatType}} = (() => {
+  const output: Record<string, { type: VariableType; format: FormatType }> = {};
   for (const type of (Object.keys(variables) as VariableType[])) {
     for (const format of (Object.keys(variables[type]) as FormatType[])) {
       output[variables[type][format] as string] = { type, format };
@@ -154,7 +154,7 @@ export class DateX {
   private timezoneOffsetMs: number;
   private timezoneOffset: number;
   private dst: DST;
-  private formats: {type: VariableType, format?: FormatType, str?: string}[];
+  private formats: {type: VariableType; format?: FormatType; str?: string}[];
   private parseRegex: RegExp;
   private hours12: boolean;
 
@@ -611,5 +611,10 @@ export class DateX {
     const n = num + this.timezoneOffsetMs;
     const milliseconds = n % 1000;
     return milliseconds;
+  }
+
+  public fromUTC(n: number): number {
+    const data = this.getData(n);
+    return n + this.timezoneOffsetMs + (data.isDst ? 3600000 : 0);
   }
 }

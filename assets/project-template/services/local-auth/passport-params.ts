@@ -6,6 +6,8 @@ import { logger } from '~/bootstrap/logger';
 import { unsafeReadUserByUsername } from '~/components/user/queries';
 import { createAuthenticationLog } from '~/components/authentication-log';
 
+// TODO: add over the wire rsa encryption using public/private key
+
 export const passportParams: PassportParams<UnsafeUser, string> = {
   strategyName: 'local',
   strategy: geoLookup => new LocalStrategy({passReqToCallback: true}, async function verifyFunction(req, username, password, done) {

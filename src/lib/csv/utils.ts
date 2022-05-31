@@ -12,7 +12,8 @@ export const defaultOptions: CsvOptions = {
     dateTimeFormat: 'YYYY-MM-DD HH:mm',
     timeFormat: 'HH:mm',
     dateFormat: 'YYYY-MM-DD',
-  }
+  },
+  skipHeader: false,
 }
 
 export function normalizeOptions(options?: CsvParams): CsvOptions {

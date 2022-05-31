@@ -21,6 +21,7 @@ export interface CsvOptions {
     dateTimeFormat: string;
     timeFormat: string;
   };
+  skipHeader: boolean;
 }
 
 export type CsvParams = Partial<Omit<CsvOptions, 'dateOptions'> & {dateOptions?: Partial<CsvOptions['dateOptions']>}>;
